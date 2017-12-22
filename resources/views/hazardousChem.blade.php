@@ -5,8 +5,8 @@
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
                 危险化学药品申购
-                <button class="layui-btn" style="margin-left: 20px" onclick="openAddForm()">添加到申购清单</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="openAddForm()">添加危险化学品</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="addToOrder()">添加到申购清单</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="viewOrder()">查看申购清单</button>
                 {{--搜索表单--}}
                 {{--<form class="layui-form" style="display:inline-block; max-width: 300px;margin-top: 10px">--}}
                     <div class="layui-form-item" style="display:inline-block; max-width: 300px;margin-top: 10px">
@@ -85,7 +85,7 @@
     </script>
     <script>
         //    var $ = layui.$
-        var form = layui.form
+        var form = layui.form;
         var table = layui.table;
         table.render({
             elem: '#hazardousChemicals'
@@ -179,6 +179,22 @@
                     page: true
                 });
             }
+        }
+        
+        function viewOrder() {
+            
+        }
+
+        function addToOrder() {
+            var checkStatus = table.checkStatus('hazardousChemicals');
+            if(checkStatus.data.length == 0){
+                layer.msg("请至少选择一行")
+                return;
+            }
+            $.post()
+            console.log(checkStatus.data) //获取选中行的数据
+            console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
+            console.log(checkStatus.isAll ) //表格是否全选
         }
 
     </script>

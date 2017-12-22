@@ -10,7 +10,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">生科院耗材管理系统</div>
+        <a href="home"><div class="layui-logo">生科院耗材管理系统</div></a>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="./home">信息录入</a></li>
@@ -93,8 +93,11 @@
                     <a href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
+                        <dd><a href="">危化品申报管理</a></dd>
+                        <dd><a href="">普通试剂管理管理</a></dd>
+                        <dd><a href="">低值设备管理</a></dd>
+                        <dd><a href="">贵重设备申报管理</a></dd>
                         <dd><a href="./userManage">用户管理</a></dd>
-                        <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
 
@@ -104,7 +107,9 @@
     @section('main-body')
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
+        <div style="padding: 15px;">
+            生科院耗材管理系统
+        </div>
     </div>
     @show
     <div class="layui-footer" onmouseover="showMe()">
