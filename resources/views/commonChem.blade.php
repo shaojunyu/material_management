@@ -158,8 +158,6 @@
     table.on('tool(commonChemTable)', function (obj) {
         var data = obj.data;
         if (obj.event === 'view') {
-//                console.log(data)
-//                layer.msg( data.id);
             $.post('commonChemDetail', {
                 id: obj.data.id,
                 _token: $('meta[name="csrf-token"]').attr('content')
@@ -245,7 +243,18 @@
     }
 
     function downloadTable() {
-
+        var checkStatus = table.checkStatus('commonChemTable');
+        if (checkStatus.data.length === 0) {
+            layer.msg("请至少选择一行");
+            return;
+        }
+        var ids = [];
+        checkStatus.data.forEach(function (item) {
+            ids.push(item.id)
+        });
+        var url = 'downloadDeviceForm?ids=' + encodeURI(JSON.stringify(ids))
+        window.open(url);
+//        console.log(encodeURI(ids));
     }
 
     function checkIfHazard() {

@@ -192,13 +192,15 @@
             var price = $("#price").val()
             var count = $("#count").val()
             $("#total").val(price*count)
-            if(price * count){
-//                layer.alert("");
-            }
         }
 
         function downloadTable() {
-
+            var checkStatus = table.checkStatus('commonDeviceTable');
+            if (checkStatus.data.length === 0) {
+                layer.msg("请至少选择一行")
+                return;
+            }
+            console.log(checkStatus.data);
         }
 
 

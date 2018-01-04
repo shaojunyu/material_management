@@ -67,4 +67,27 @@ class CommonDeviceController extends Controller
         }
         return view('chemical.commonChemDetail',['chemical'=>$device]);
     }
+
+    public function allCommonDevices(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->is_admin){
+            return JsonResponse::create('无权访问');
+        }
+        $page = $request->input('page');
+        $size = $request->input('limit');
+        $data = CommonDevice::offset($size*($page-1))
+            ->take($size)
+            ->orderBy('id', 'desc')
+            ->get();
+        $count = count($data);
+        return JsonResponse::create(['code'=>0,'count'=>$count,'data'=>$data]);
+    }
+
+    public function downloadDeviceForm(Request $request)
+    {
+//        var_dump($request->input('ids'));
+        $ids = json_decode($request->input('ids'));
+        return $ids;
+    }
 }

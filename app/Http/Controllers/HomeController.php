@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HazardousChemicalOrder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\User;
@@ -60,6 +61,20 @@ class HomeController extends Controller
         return view('chemicalManage',['user'=>$user]);
     }
 
+    public function hazardousChemicalOrderManage()
+    {
+        return view('hazardChemOrderManage');
+    }
+
+    public function commonChemicalManage()
+    {
+        return view('commonChemManage');
+    }
+
+    public function CommonDeviceManage()
+    {
+        return view('commonDeviceManage');
+    }
     public function userManage()
     {
         return view('userManage');

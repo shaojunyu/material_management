@@ -4,10 +4,10 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
-                危险化学药品申购记录
+                <h2>危险化学药品申购管理</h2>
                 {{--<button class="layui-btn" style="margin-left: 20px" onclick="openAddForm()">添加危险化学品</button>--}}
             </blockquote>
-            <table id="hazardousChemicalOrder" lay-filter="hazardousChemicalOrder">
+            <table id="allHazardousChemicalOrders" lay-filter="allHazardousChemicalOrders">
             </table>
         </div>
     </div>
@@ -16,30 +16,38 @@
     <script>
         var form = layui.form;
         var table = layui.table;
-        table.render({
-            elem:$("#hazardousChemicalOrder"),
-            url:'getOrders',
+        var ordersTable = table.render({
+            elem:$("#allHazardousChemicalOrders"),
+            url:'allHazardousChemicalOrders',
+            page: true,
             cols:[[
                 {field: 'id', title: '申购业务号'},
+                {field: '申购人姓名', title: '负责人'},
                 {field: 'intro', title:'内容'},
-                {field: 'statusName', title: '申购状态'},
+                {field: 'status', title: '申购状态', templet:function (d) {
+                    if (d.status === "submitted")
+                        return '等待审核';
+                    if (d.status === "done")
+                        return '审核通过';
+                }},
                 {field: 'created_at', title: '时间'},
-                {fixed: 'right', width:200, align:'center', templet:function (d) {
+                {fixed: 'right', width:280, align:'center', templet:function (d) {
                     if (d.status === "applying")
                         return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>\n' +
                             '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
                     if (d.status === "submitted")
-                        return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载报表</a>\n' +
+                        return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pass">审核通过</a>\n' +
+                            '<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">下载报表</a>\n' +
                             '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n' +
                             '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
                     if (d.status === "done")
-                        return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载报表</a>\n' +
+                        return '<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">下载报表</a>\n' +
                             '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n';
                 }}
             ]]
         });
         //监听表格工具条
-        table.on('tool(hazardousChemicalOrder)', function(obj){
+        table.on('tool(allHazardousChemicalOrders)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('确定删除数据么：' + obj.data.id+"订单", function(index){
@@ -61,8 +69,24 @@
                     layer.open({
                         type:1,
                         area:'1200px',
-//                        maxHeight:'600px',
                         content:d
+                    });
+                });
+            }else if(obj.event === 'pass'){
+                layer.confirm('确定审核通过该业务么？ <br>业务号:'+obj.data.id,function (index) {
+                    $.ajax({
+                        type: "POST",
+                        url: "passOrder",
+                        contentType: "application/json; charset=utf-8",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: JSON.stringify({order_id:obj.data.id}),
+                        success: function (d) {
+                            ordersTable.reload();
+                            layer.close(index);
+                            layer.msg(d.message, {icon: 1,time:2*1000});
+                        }
                     });
                 });
             }else if(obj.event === 'download'){
@@ -70,8 +94,6 @@
                 window.open(url);
             }
         });
-
-
     </script>
     <script type="text/html" id="toolbar">
         <div type="text/html" id="toolbarForApplying">

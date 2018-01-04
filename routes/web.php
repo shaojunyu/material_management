@@ -29,9 +29,14 @@ Route::get('CommonChemical','HomeController@commonChemical');
 //危化品申购页面
 Route::get('HazardousChemical','HomeController@hazardousChemical');
 Route::get('HazardousChemicalOrder','HomeController@HazardousChemicalOrder');
-
 //低值设备入库页面
 Route::get('commonDevice','HomeController@commonDevice');
+//危化品申报管理页面
+Route::get('HazardousChemicalOrderManage','HomeController@hazardousChemicalOrderManage');
+//普通试剂管理页面
+Route::get('CommonChemicalManage','HomeController@commonChemicalManage');
+//普通设备管理页面
+Route::get('CommonDeviceManage','HomeController@CommonDeviceManage');
 
 Route::post('/changePassword', 'HomeController@changePassword');
 Route::get('/hazardousChemicalManage','HomeController@hazardousChemicalManage');
@@ -48,7 +53,7 @@ Route::get('commonDeviceList','CommonDeviceController@getList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');
 Route::post('addCommonDevice','CommonDeviceController@addDevice');
 Route::post('commonDeviceDetail','CommonDeviceController@getDetail');
-
+Route::get('downloadDeviceForm','CommonDeviceController@downloadDeviceForm');
 
 //用户管理
 Route::get('userList','UserController@getList');
@@ -67,6 +72,8 @@ Route::get('getOrders','HazardousChemicalOrderController@getOrders');
 Route::post('deleteOrder','HazardousChemicalOrderController@deleteOrder');
 Route::post('storeOrder','HazardousChemicalOrderController@storeOrder');
 Route::post('submitOrder','HazardousChemicalOrderController@submitOrder');
+Route::get('viewOrderDetail','HazardousChemicalOrderController@orderDetail');
+Route::get('downloadOrderForm','HazardousChemicalOrderController@downloadOrder');
 //Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
 
 //危化品管理
@@ -76,5 +83,14 @@ Route::post('deleteHazardChem','HazardChemicalController@deleteHazardChem');
 Route::post('editHazardChem','HazardChemicalController@editHazardChem');
 Route::post('updateHazardChem','HazardChemicalController@updateHazardChem');
 
+//危化品订单管理
+Route::get("allHazardousChemicalOrders","HazardousChemicalOrderController@allOrders");
+Route::post("passOrder",'HazardousChemicalOrderController@passOrder');
+
+//普通试剂管理
+Route::get('allCommonChem','CommonChemicalController@allCommonChem');
+
+//普通设备管理
+Route::get('allCommonDevices','CommonDeviceController@allCommonDevices');
 
 Route::get('test','TestController@test');

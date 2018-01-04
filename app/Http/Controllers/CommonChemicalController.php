@@ -82,4 +82,20 @@ class CommonChemicalController extends Controller
             return JsonResponse::create(['code'=>1,'count'=>$c]);
         }
     }
+
+    public function allCommonChem(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->is_admin){
+            return JsonResponse::create('无权访问');
+        }
+        $page = $request->input('page');
+        $size = $request->input('limit');
+        $data = CommonChemical::offset($size*($page-1))
+            ->take($size)
+            ->orderBy('id', 'desc')
+            ->get();
+        $count = count($data);
+        return JsonResponse::create(['code'=>0,'count'=>$count,'data'=>$data]);
+    }
 }
