@@ -43,6 +43,11 @@ class HomeController extends Controller
         return view('hazardousChem',['search'=>$request->input('search')]);
     }
 
+    public function HazardousChemicalOrder()
+    {
+        return view('hazardousChemOrder');
+    }
+
     public function commonDevice()
     {
         return view('commonDevice');

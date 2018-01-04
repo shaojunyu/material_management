@@ -78,6 +78,7 @@
                     <a class="" href="javascript:;">药品申购与入库</a>
                     <dl class="layui-nav-child">
                         <dd><a href="HazardousChemical">危险化学品申购</a></dd>
+                        <dd><a href="HazardousChemicalOrder">危化品申购记录</a></dd>
                         <dd><a href="CommonChemical">普通试剂入库</a></dd>
                     </dl>
                 </li>

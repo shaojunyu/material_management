@@ -28,6 +28,8 @@ Route::get('authorised','HomeController@authorised');
 Route::get('CommonChemical','HomeController@commonChemical');
 //危化品申购页面
 Route::get('HazardousChemical','HomeController@hazardousChemical');
+Route::get('HazardousChemicalOrder','HomeController@HazardousChemicalOrder');
+
 //低值设备入库页面
 Route::get('commonDevice','HomeController@commonDevice');
 
@@ -55,7 +57,16 @@ Route::post('editUser','UserController@editUserForm');
 Route::post('updateUser','UserController@updateUser');
 Route::post('deleteUser','UserController@deleteUser');
 
+//危化品申购
+Route::get('hazardChemCart','HazardousChemicalOrderController@getCart');
+Route::post('addItemToHazardChemCart','HazardousChemicalOrderController@addItemToCart');
+Route::post('deleteHazardChemCartItem','HazardousChemicalOrderController@deleteCartItem');
+Route::get('editOrder','HazardousChemicalOrderController@editOrder');
+Route::get('submitCart','HazardousChemicalOrderController@submitCart');
+Route::get('getOrders','HazardousChemicalOrderController@getOrders');
+Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
 
+//危化品管理
 Route::get('/hazardousChemicalList','HazardChemicalController@getList');
 Route::post('addHazardChem','HazardChemicalController@addHazardChem');
 Route::post('deleteHazardChem','HazardChemicalController@deleteHazardChem');
