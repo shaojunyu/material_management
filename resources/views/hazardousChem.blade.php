@@ -180,13 +180,17 @@
             var re = /'/
             var text = $(obj).val();
             if (!re.test(text)) {
-                console.log($(obj).val())
+                console.log($(obj).val());
+                layer.load(2);
                 table.reload('hazardousChemicals', {
                     url: 'hazardousChemicalList?search=' + text,
                     request: {
                         pageName: 1
                     },
-                    page: true
+                    page: true,
+                    done:function () {
+                        layer.closeAll();
+                    }
                 });
             }
         }

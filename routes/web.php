@@ -64,7 +64,10 @@ Route::post('deleteHazardChemCartItem','HazardousChemicalOrderController@deleteC
 Route::get('editOrder','HazardousChemicalOrderController@editOrder');
 Route::get('submitCart','HazardousChemicalOrderController@submitCart');
 Route::get('getOrders','HazardousChemicalOrderController@getOrders');
-Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
+Route::post('deleteOrder','HazardousChemicalOrderController@deleteOrder');
+Route::post('storeOrder','HazardousChemicalOrderController@storeOrder');
+Route::post('submitOrder','HazardousChemicalOrderController@submitOrder');
+//Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
 
 //危化品管理
 Route::get('/hazardousChemicalList','HazardChemicalController@getList');
@@ -74,4 +77,4 @@ Route::post('editHazardChem','HazardChemicalController@editHazardChem');
 Route::post('updateHazardChem','HazardChemicalController@updateHazardChem');
 
 
-Route::get('test','HomeController@test');
+Route::get('test','TestController@test');
