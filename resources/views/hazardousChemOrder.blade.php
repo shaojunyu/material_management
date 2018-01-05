@@ -4,7 +4,8 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
-                危险化学药品申购记录
+                <img src="images/List2.png">
+                <h2 style="display: inline">危险化学药品申购记录</h2>
                 {{--<button class="layui-btn" style="margin-left: 20px" onclick="openAddForm()">添加危险化学品</button>--}}
             </blockquote>
             <table id="hazardousChemicalOrder" lay-filter="hazardousChemicalOrder">

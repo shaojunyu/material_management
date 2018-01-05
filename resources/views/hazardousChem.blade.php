@@ -4,7 +4,8 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
-                危险化学药品申购
+                <img src="images/danger-16.png">
+                <h2 style="display: inline">危险化学药品申购</h2>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addToCart()">添加到申购清单</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="viewCart()">
                     查看申购清单

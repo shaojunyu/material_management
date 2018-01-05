@@ -54,6 +54,11 @@ class HomeController extends Controller
         return view('commonDevice');
     }
 
+    public function radioactiveElement()
+    {
+        return view('radioactiveElement');
+    }
+
     //页面
     public function hazardousChemicalManage()
     {

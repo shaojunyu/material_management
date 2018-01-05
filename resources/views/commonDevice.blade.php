@@ -4,7 +4,8 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
-                低值设备入库 &nbsp;(适用于单价1000元以下的仪器设备)
+                <img src="images/device2.png">
+                <h2 style="display: inline">低值设备入库 &nbsp;(适用于单价1000元以下的仪器设备)</h2>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonDevice()">添加</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">下载报表</button>
             </blockquote>

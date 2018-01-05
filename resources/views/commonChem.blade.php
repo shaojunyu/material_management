@@ -4,7 +4,8 @@
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
         <blockquote class="layui-elem-quote">
-            普通试剂入库
+            <img src="images/chemical2.png">
+            <h2 style="display: inline">普通试剂入库</h2>
             <button class="layui-btn" style="margin-left: 20px" onclick="addCommonChem()">添加</button>
             <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">下载报表</button>
         </blockquote>

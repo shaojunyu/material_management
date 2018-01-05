@@ -31,6 +31,10 @@ Route::get('HazardousChemical','HomeController@hazardousChemical');
 Route::get('HazardousChemicalOrder','HomeController@HazardousChemicalOrder');
 //低值设备入库页面
 Route::get('commonDevice','HomeController@commonDevice');
+//放射性元素申购页面
+Route::get('RadioactiveElement','HomeController@radioactiveElement');
+
+
 //危化品申报管理页面
 Route::get('HazardousChemicalOrderManage','HomeController@hazardousChemicalOrderManage');
 //普通试剂管理页面

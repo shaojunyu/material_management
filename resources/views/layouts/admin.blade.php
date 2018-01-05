@@ -6,11 +6,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>生科院耗材管理系统</title>
     <link rel="stylesheet" href="../css/layui.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <a href="home"><div class="layui-logo">生科院耗材管理系统</div></a>
+        <a href="home">
+            <div class="layui-logo">生科院耗材管理系统</div>
+        </a>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="./home">信息录入</a></li>
@@ -20,24 +24,24 @@
             --}}
             {{--
             <li class="layui-nav-item">--}}
-                {{--<a href="javascript:;">其它系统</a>--}}
-                {{--
-                <dl class="layui-nav-child">--}}
-                    {{--
-                    <dd><a href="">邮件管理</a></dd>
-                    --}}
-                    {{--
-                    <dd><a href="">消息管理</a></dd>
-                    --}}
-                    {{--
-                    <dd><a href="">授权管理</a></dd>
-                    --}}
-                    {{--
-                </dl>
-                --}}
-                {{--
-            </li>
+            {{--<a href="javascript:;">其它系统</a>--}}
+            {{--
+            <dl class="layui-nav-child">--}}
+            {{--
+            <dd><a href="">邮件管理</a></dd>
             --}}
+            {{--
+            <dd><a href="">消息管理</a></dd>
+            --}}
+            {{--
+            <dd><a href="">授权管理</a></dd>
+            --}}
+            {{--
+        </dl>
+        --}}
+            {{--
+        </li>
+        --}}
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -64,9 +68,9 @@
             {{--
             <li class="layui-nav-item">--}}
 
-                {{--
-            </li>
-            --}}
+            {{--
+        </li>
+        --}}
         </ul>
     </div>
 
@@ -77,16 +81,19 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">药品申购与入库</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="HazardousChemical">危险化学品申购</a></dd>
-                        <dd><a href="HazardousChemicalOrder">危化品申购记录</a></dd>
-                        <dd><a href="CommonChemical">普通试剂入库</a></dd>
+                        <dd><a href="HazardousChemical">危险化学品申购 <img src="images/danger-15.png" class="img-icon"></a>
+                        </dd>
+                        <dd><a href="HazardousChemicalOrder">危化品申购记录 <img src="images/deviceList.png" class="img-icon"> </a></dd>
+                        <dd><a href="RadioactiveElement">放射性元素申购 <img src="images/radioactive.png" class="img-icon"></a>
+                        </dd>
+                        <dd><a href="CommonChemical">普通试剂入库 <img src="images/chemical.png" class="img-icon"></a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">耗材管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="commonDevice">低值设备入库</a></dd>
-                        <dd><a href="javascript:;">贵重设备申报</a></dd>
+                        <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
+                        <dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
@@ -96,7 +103,7 @@
                         <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
                         <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
                         <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
-                        <dd><a href="CommonDeviceManage">低值设备管理</a></dd>
+                        <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
                         <dd><a href="">贵重设备申报管理</a></dd>
                         <dd><a href="./userManage">用户管理</a></dd>
                     </dl>
@@ -106,12 +113,12 @@
         </div>
     </div>
     @section('main-body')
-    <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <div style="padding: 15px;">
-            生科院耗材管理系统
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                生科院耗材管理系统
+            </div>
         </div>
-    </div>
     @show
     <div class="layui-footer" onmouseover="showMe()">
         <!-- 底部固定区域 -->
@@ -150,24 +157,28 @@
     </table>
 </div>
 <div style="display: none" id="changePassword">
-    <form method="post" class="layui-form" onsubmit="return checkChangePasswordForm()" action="./changePassword" style="margin-right: 20px; margin-top: 20px">
+    <form method="post" class="layui-form" onsubmit="return checkChangePasswordForm()" action="./changePassword"
+          style="margin-right: 20px; margin-top: 20px">
         {{ csrf_field() }}
         <div class="layui-form-item">
             <label class="layui-form-label">旧密码</label>
             <div class="layui-input-block">
-                <input type="text" name="oldPassword" required  lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="oldPassword" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">新密码</label>
             <div class="layui-input-block">
-                <input type="text" name="newPassword" required  lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="newPassword" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">再次输入新密码</label>
             <div class="layui-input-block">
-                <input type="text" name="newPassword2" required  lay-verify="required" autocomplete="off" class="layui-input">
+                <input type="text" name="newPassword2" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -204,6 +215,7 @@
 @endif
 <script>
     var $ = layui.$;
+
     function userInfo() {
         var $ = layui.$;
         layer.open({
@@ -221,9 +233,10 @@
             content: $('#changePassword')
         });
     }
+
     function checkChangePasswordForm() {
         var $ = layui.$;
-        if ($("[name='newPassword']").val() != $("[name='newPassword2']").val()){
+        if ($("[name='newPassword']").val() != $("[name='newPassword2']").val()) {
             alert("新密码不一致");
             return false;
         }
@@ -231,14 +244,14 @@
 
     setInterval(function () {
         $.ajax({
-            url:'authorised',
-            statusCode:{
-                401:function () {
+            url: 'authorised',
+            statusCode: {
+                401: function () {
                     window.location.reload()
                 }
             }
         })
-    },60000)
+    }, 60000)
 
     function showMe() {
 //        layer.msg("Bug report: yushaojun@hust.edu.cn",{time:1*1000});
