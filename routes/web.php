@@ -59,6 +59,15 @@ Route::post('addCommonDevice','CommonDeviceController@addDevice');
 Route::post('commonDeviceDetail','CommonDeviceController@getDetail');
 Route::get('downloadDeviceForm','CommonDeviceController@downloadDeviceForm');
 
+//放射性元素
+Route::post('addRadioactive','RadioactiveElementController@add');
+Route::get('radioactiveList','RadioactiveElementController@getList');
+Route::post('deleteRadioactive','RadioactiveElementController@delete');
+Route::post('editRadioactive','RadioactiveElementController@edit');
+Route::post('updateRadioactive','RadioactiveElementController@update');
+Route::post('submitRadioactive','RadioactiveElementController@submit');
+Route::post('radioactiveDetail','RadioactiveElementController@detail');
+
 //用户管理
 Route::get('userList','UserController@getList');
 Route::post('addUser','UserController@addUser');
@@ -96,5 +105,7 @@ Route::get('allCommonChem','CommonChemicalController@allCommonChem');
 
 //普通设备管理
 Route::get('allCommonDevices','CommonDeviceController@allCommonDevices');
+
+
 
 Route::get('test','TestController@test');

@@ -1,8 +1,5 @@
 <div style="padding: 15px;" id="addRadioactive">
-    <form class="layui-form" action="" lay-filter="editRadioactiveForm" id="editRadioactiveForm">
-        {{ csrf_field() }}
-        <input hidden name="id" value="{{ $element['id'] }}">
-        <div class="layui-form-mid layui-word-aux">带*为必填项</div>
+    <form class="layui-form" action="" lay-filter="editRadioactiveForm" id="RadioactiveDetailForm">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">实验室名称*</label>
@@ -145,57 +142,9 @@
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="editRadioactiveForm">立即提交</button>
-                <button class="layui-btn layui-btn-normal" onclick="updateDraft()">保存信息</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
     </form>
 </div>
 <script>
     form.render();
-    form.on('submit(editRadioactiveForm)',function (data) {
-        layer.confirm('确认提交申购？请确认信息准确！管理员会审核信息！', function(index){
-            $.post('submitRadioactive',data.field,function (d) {
-                if(d.code == 0){
-                    layer.closeAll();
-                    table.reload("radioactiveTable");
-                }
-                layer.msg(d.message);
-            });
-            layer.close(index);
-        });
-        return false;
-    });
-
-    function updateDraft() {
-        var allInputs = $("#editRadioactiveForm").serializeArray();
-        var numOfNone = 0;
-        $.each(allInputs,function (index,item) {
-            if (item.value === "")
-                numOfNone++;
-        });
-        if (numOfNone === 18){
-            layer.alert("请至少填入一项信息！");
-            Event.preventDefault();
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            url: "updateRadioactive",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: $("#editRadioactiveForm").serialize(),
-            success: function (d) {
-                table.reload("radioactiveTable");
-                layer.closeAll();
-                layer.msg(d.message, {icon: 1,time:2*1000});
-            }
-        });
-        event.preventDefault();
-        return false;
-    }
+    $("#RadioactiveDetailForm input").attr('disabled','disabled');
 </script>

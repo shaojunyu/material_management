@@ -128,7 +128,7 @@
                 , {field: '总金额', title: '总金额'}
                 , {field: '采购负责人', title: '采购负责人'}
                 , {field: '负责人号码', title: '负责人号码'}
-                , {field: '采购单位', title: '采购单位'}
+                , {field: '采购单位', title: '采购单位',width:300}
                 , {field: '采购日期', title: '采购日期'}
 
                 , {fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo'}

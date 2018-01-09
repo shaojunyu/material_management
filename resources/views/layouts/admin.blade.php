@@ -93,7 +93,7 @@
                     <a href="javascript:;">耗材管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
-                        <dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>
+                        {{--<dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>--}}
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
