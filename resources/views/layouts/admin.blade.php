@@ -7,7 +7,8 @@
     <title>生科院耗材管理系统</title>
     <link rel="stylesheet" href="../css/layui.css">
     <link rel="stylesheet" href="../css/app.css">
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    {{--<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">--}}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -87,16 +88,17 @@
                         <dd><a href="RadioactiveElement">放射性元素申购 <img src="images/radioactive.png" class="img-icon"></a>
                         </dd>
                         <dd><a href="CommonChemical">普通试剂入库 <img src="images/chemical.png" class="img-icon"></a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">耗材管理</a>
-                    <dl class="layui-nav-child">
                         <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
-                        {{--<dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>--}}
-                        <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
+                {{--<li class="layui-nav-item layui-nav-itemed">--}}
+                    {{--<a href="javascript:;">耗材管理</a>--}}
+                    {{--<dl class="layui-nav-child">--}}
+                        {{--<dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>--}}
+                        {{--<dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>--}}
+                        {{--<dd><a href="">超链接</a></dd>--}}
+                    {{--</dl>--}}
+                {{--</li>--}}
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
@@ -104,7 +106,7 @@
                         <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
                         <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
                         <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
-                        <dd><a href="">贵重设备申报管理</a></dd>
+                        {{--<dd><a href="">贵重设备申报管理</a></dd>--}}
                         <dd><a href="./userManage">用户管理</a></dd>
                     </dl>
                 </li>

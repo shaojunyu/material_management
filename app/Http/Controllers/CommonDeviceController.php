@@ -86,8 +86,16 @@ class CommonDeviceController extends Controller
 
     public function downloadDeviceForm(Request $request)
     {
-//        var_dump($request->input('ids'));
         $ids = json_decode($request->input('ids'));
+        $items = [];
+        $total = 0;
+        foreach ($ids as $id) {
+            var_dump($id);
+//            $item = CommonDevice::find($id);
+//            $item->总金额 = $item->单价 * $item->数量;
+//            $total += $item->总金额;
+//            $items[] = $item;
+        }
         return $ids;
     }
 }

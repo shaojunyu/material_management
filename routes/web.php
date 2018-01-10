@@ -48,10 +48,15 @@ Route::get('userManage','HomeController@userManage');
 
 //普通试剂
 Route::get('commonChemList','CommonChemicalController@getList');
+Route::get('commonChemHistoryList','CommonChemicalController@getHistoryList');
 Route::post('deleteCommonChem','CommonChemicalController@deleteChem');
 Route::post('addCommonChem','CommonChemicalController@addChem');
 Route::post('commonChemDetail','CommonChemicalController@getDetail');
 Route::post('checkIfHazard','CommonChemicalController@checkIfHazard');
+Route::get('downloadCommonChemForm','CommonChemicalController@downloadForm');
+Route::post('batchDeleteCommonChem','CommonChemicalController@batchDelete');
+Route::get('batchDownloadCommonChemForm','CommonChemicalController@batchDownload');
+
 //普通设备
 Route::get('commonDeviceList','CommonDeviceController@getList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');

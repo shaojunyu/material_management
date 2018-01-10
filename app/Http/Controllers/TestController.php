@@ -9,7 +9,8 @@ class TestController extends Controller
 {
     public function test()
     {
-        $o = HazardousChemicalOrder::find(29);
+        $o = HazardousChemicalOrder::find(30);
         return $o;
+        return get_class($o);
     }
 }

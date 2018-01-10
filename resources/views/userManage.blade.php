@@ -63,7 +63,7 @@
             {type:'checkbox'},
             {field: 'staff_id', title: '人事编号'}
             , {field: 'name', title: '姓名'}
-            ,{fixed: 'right', width:150, align:'center', toolbar: '#barDemo'}
+            ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
         ]]
     });
 

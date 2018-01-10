@@ -6,14 +6,11 @@
             <blockquote class="layui-elem-quote">
                 危险化学药品管理
                 <button class="layui-btn" style="margin-left: 20px" onclick="openAddForm()">添加危险化学品</button>
-
             </blockquote>
             <table id="hazardousChemicals" lay-filter="hazardousChemicals">
-
             </table>
         </div>
     </div>
-
 
     {{--添加数据的表单--}}
     <div id="addHahadChem" style="display: none; margin: 10px 20px 20px 30px;">
