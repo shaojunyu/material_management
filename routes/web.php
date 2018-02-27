@@ -62,7 +62,9 @@ Route::get('commonDeviceList','CommonDeviceController@getList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');
 Route::post('addCommonDevice','CommonDeviceController@addDevice');
 Route::post('commonDeviceDetail','CommonDeviceController@getDetail');
-Route::get('downloadDeviceForm','CommonDeviceController@downloadDeviceForm');
+Route::get('downloadCommonDeviceForm','CommonDeviceController@downloadDeviceForm');
+Route::get('batchDownloadCommonDeviceForm','CommonDeviceController@batchDownload');
+Route::get('commonDeviceHistoryList','CommonDeviceController@getHistoryList');
 
 //放射性元素
 Route::post('addRadioactive','RadioactiveElementController@add');

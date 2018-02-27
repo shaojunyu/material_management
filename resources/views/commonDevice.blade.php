@@ -1,17 +1,35 @@
 @extends('layouts.admin')
 @section('main-body')
+    <style>
+        .layui-elem-quote-red {
+            margin-bottom: 10px;
+            padding: 15px;
+            line-height: 22px;
+            border-radius: 0 2px 2px 0;
+            background-color: #f2f2f2;
+            border-left: 5px solid #ff0000;
+        }
+    </style>
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <blockquote class="layui-elem-quote">
                 <img src="images/device2.png">
                 <h2 style="display: inline">低值设备入库 &nbsp;(适用于单价1000元以下的仪器设备)</h2>
+                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史批次</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonDevice()">添加</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">下载报表</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">合并到统一批次</button>
             </blockquote>
             <table id="commonDeviceTable" lay-filter="commonDeviceTable">
 
             </table>
+            <div>
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                    <legend>历史批次</legend>
+                </fieldset>
+                <table id="commonDeviceHistoryTable" lay-filter="commonDeviceHistoryTable">
+                </table>
+            </div>
         </div>
     </div>
     <div style="display: none; padding: 15px;" id="addCommonDevice">
@@ -168,9 +186,10 @@
         });
 
         form.on('submit(addCommonDeviceForm)', function(data){//on 绑定submit button的filter
-            console.log(data) //被执行事件的元素DOM对象，一般为button对象
-            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            if ($("#price").val() >= 1000){
+                layer.alert("低值设备单价不可超过1000元！");
+                return false;
+            }
             $.post('addCommonDevice',data.field,function (d) {
                 if(d.code == 0){
                     layer.closeAll();
@@ -190,8 +209,11 @@
         }
 
         function caculateTotal() {
-            var price = $("#price").val()
-            var count = $("#count").val()
+            var price = $("#price").val();
+            var count = $("#count").val();
+            if (price >= 1000){
+                layer.alert("低值设备单价不可超过1000元！");
+            }
             $("#total").val(price*count)
         }
 
@@ -201,9 +223,188 @@
                 layer.msg("请至少选择一行")
                 return;
             }
-            console.log(checkStatus.data);
+            var ids = [];
+            var total = 0;
+            var confirm = "<h3>以下物品会打包成一个批次，请确认!<br><ul>";
+            checkStatus.data.forEach(function (item) {
+                ids.push(item.id);
+                confirm += "<li><span class=\"layui-badge-dot layui-bg-black\"></span>&nbsp;" + item.品名 + "</li>";
+                total += item.总金额;
+            });
+            confirm += "</ul>";
+            if (total >= 100000) {
+                confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                    + "根据学院规定，单批次价格≥10万元时，需要实验室与设备管理处验收观察员现场验收，签字。请知悉！</blockquote></h3>"
+            } else if (total >= 50000) {
+                confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                    + "根据学院规定，单批次价格≥5万元时，需要单位分管领导现场验收，签字。请知悉！</blockquote></h3>"
+            }
+            else if (total >= 10000) {
+                confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                    + "根据学院规定，单批次价格≥1万元时，需要单位设备管理员现场验收，签字。请知悉！</blockquote></h3>"
+            } else {
+                confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                    + "</blockquote></h3>"
+            }
+            var url = 'downloadCommonDeviceForm?ids=' + encodeURI(JSON.stringify(ids));
+            layer.confirm(confirm, function (index) {
+                layer.close(index);
+                window.open(url);
+                setTimeout(function () {
+                    table.reload("commonDeviceTable");
+                    table.reload("commonDeviceHistoryTable");
+                },2000);
+            });
         }
-
-
+        
+        function showHistory() {
+            layer.load();
+            table.render({
+                elem: '#commonDeviceHistoryTable'
+                , url: 'commonDeviceHistoryList'
+                , limit: 20
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {type: 'checkbox'}
+                    , {field: 'id', title: '批次编号', width:100}
+                    , {field: 'intro', title: '内容'}
+                    , {field: '总金额', title: '总金额(￥)'}
+                    , {field: 'created_at', title: '创建时间'}
+                    , {field: 'status', title: '状态',templet: function (d){
+                        if(d.status === 'submitted')
+                            return "已提交，等待审核";
+                        if (d.status === "done")
+                            return "已完成审核";
+                    }}
+                    , {
+                        fixed: 'right', align: 'center', templet: function (d) {
+                            if (d.status === "applying")
+                                return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>\n' +
+                                    '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                            if (d.status === "submitted")
+                                return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载报表</a>\n' +
+                                    '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n' +
+                                    '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                            if (d.status === "done")
+                                return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载报表</a>\n' +
+                                    '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n';
+                        }
+                    }
+                ]],
+                done: function () {
+                    layer.closeAll();
+                }
+            });
+        }
+    </script>
+    {{--详情模板--}}
+    <div id="batchCommonDeviceDetail" hidden style="padding: 10px;">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>批次编号：@{{ id }} &nbsp;| &nbsp;总金额：@{{ total }}</legend>
+        </fieldset>
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>试剂名称</th>
+                <th>规格</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>小计</th>
+                <th>申报日期</th>
+                <th>负责人</th>
+                <th>负责人号码</th>
+                <th>申购单位</th>
+                <th>供应商</th>
+                <th>供应商电话</th>
+                <th>经费编号</th>
+                <th>经费名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="device in devices">
+                <td>@{{ devices.试剂名称 }}</td>
+                <td>@{{ devices.规格 }}</td>
+                <td>@{{ devices.数量 }}</td>
+                <td>@{{ devices.单价 }}</td>
+                <td>@{{ devices.小计 }}</td>
+                <td>@{{ devices.申报日期 }}</td>
+                <td>@{{ devices.申购人姓名 }}</td>
+                <td>@{{ devices.申购人号码 }}</td>
+                <td>@{{ devices.申购单位 }}</td>
+                <td>@{{ devices.供应商 }}</td>
+                <td>@{{ devices.供应商电话 }}</td>
+                <td>@{{ devices.经费编号 }}</td>
+                <td>@{{ devices.经费名称 }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#batchCommonDeviceDetail',
+            data: {
+                devices: [],
+                id:'',
+                total:0
+            }
+        });
+        //监听表格工具条
+        table.on('tool(commonDeviceHistoryTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'view') {
+                app.devices = data.devices;
+                app.id = data.id;
+                app.total = data.总金额;
+                layer.open({
+                    type: 1,
+                    content: $("#batchCommonDevicesDetail"),
+                    title: '批次详情',
+                    area:['1300px']
+                });
+            } else if (obj.event === 'del') {
+                layer.confirm('确定删除该批次数据么？批次号：' + obj.data.id, function (index) {
+                    $.post('batchDeleteCommonDevice', {
+                        id: obj.data.id,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    }, function (d) {
+                        layer.msg(d.message);
+                        if (d.code == 0) {
+                            table.reload("commonDevicesHistoryTable")
+                        }
+                    });
+                });
+            } else if (obj.event === 'download') {
+                var ids = [];
+                var total = 0;
+                var confirm = "<h3>您将下载该批次的申报文件，请确认!<br>";
+                confirm += "<h3>批次号："+data.id+"<br><ul>";
+                data.devices.forEach(function (item) {
+                    ids.push(item.id);
+                    confirm += "<li><span class=\"layui-badge-dot layui-bg-black\"></span>&nbsp;" + item.品名 + "</li>";
+                    total += item.总金额;
+                });
+                confirm += "</ul>";
+                if (total >= 100000) {
+                    confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                        + "根据学院规定，单批次价格≥10万元时，需要实验室与设备管理处验收观察员现场验收，签字。请知悉！</blockquote></h3>"
+                } else if (total >= 50000) {
+                    confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                        + "根据学院规定，单批次价格≥5万元时，需要单位分管领导现场验收，签字。请知悉！</blockquote></h3>"
+                }
+                else if (total >= 10000) {
+                    confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                        + "根据学院规定，单批次价格≥1万元时，需要单位设备管理员现场验收，签字。请知悉！</blockquote></h3>"
+                } else {
+                    confirm += "<blockquote class=\"layui-elem-quote-red\">该批次总价为：<h2>" + total + "元</h2><br>"
+                        + "</blockquote></h3>"
+                }
+                var url = 'batchDownloadCommonDeviceForm?id=' + data.id;
+                layer.confirm(confirm, function (index) {
+                    window.open(url);
+                    table.reload("commonDeviceTable");
+                    layer.close(index);
+                });
+            }
+        });
     </script>
 @endsection
