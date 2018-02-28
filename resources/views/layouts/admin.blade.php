@@ -57,7 +57,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">药品申购与入库</a>
+                    <a class="" href="javascript:;">试剂设备申购与入库</a>
                     <dl class="layui-nav-child">
                         <dd><a href="HazardousChemical">危险化学品申购 <img src="images/danger-15.png" class="img-icon"></a>
                         </dd>
@@ -73,6 +73,7 @@
                         <a href="javascript:;">系统管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
+                            {{--<dd><a href="./hazardousChemicalInOutManage">危化品进出库管理</a></dd>--}}
                             <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
                             <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
                             <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>

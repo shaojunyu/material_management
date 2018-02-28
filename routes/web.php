@@ -33,7 +33,8 @@ Route::get('HazardousChemicalOrder','HomeController@HazardousChemicalOrder');
 Route::get('commonDevice','HomeController@commonDevice');
 //放射性元素申购页面
 Route::get('RadioactiveElement','HomeController@radioactiveElement');
-
+//危化品进出库
+Route::get('hazardousChemicalInOutManage','HomeController@hazardousChemicalInOutManage');
 
 //危化品申报管理页面
 Route::get('HazardousChemicalOrderManage','HomeController@hazardousChemicalOrderManage');
@@ -125,5 +126,14 @@ Route::get('approvedCommonDeviceOrders','CommonDeviceController@approvedCommonDe
 Route::get('submittedRadioactive','RadioactiveElementController@submittedRadioactive');
 Route::get('approvedRadioactive','RadioactiveElementController@approvedRadioactive');
 Route::post('approveRadioactive','RadioactiveElementController@approveRadioactive');
+
+
+//进出库管理
+Route::get('hazardousChemicalInTable','HazardChemicalController@inTable');
+Route::get('hazardousChemicalOutTable','HazardChemicalController@outTable');
+Route::post('hazardousChemicalAddIn','HazardChemicalController@addIn');
+Route::post('hazardousChemicalAddOut','HazardChemicalController@addOut');
+Route::post('hazardousChemicalDeleteIn','HazardChemicalController@deleteIn');
+Route::post('hazardousChemicalDeleteOut','HazardChemicalController@deleteOut');
 
 Route::get('test','TestController@test');
