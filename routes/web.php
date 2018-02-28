@@ -41,6 +41,8 @@ Route::get('HazardousChemicalOrderManage','HomeController@hazardousChemicalOrder
 Route::get('CommonChemicalManage','HomeController@commonChemicalManage');
 //普通设备管理页面
 Route::get('CommonDeviceManage','HomeController@CommonDeviceManage');
+//放射元素管理页面
+Route::get('RadioactiveElementManage','HomeController@RadioactiveElementManage');
 
 Route::post('/changePassword', 'HomeController@changePassword');
 Route::get('/hazardousChemicalManage','HomeController@hazardousChemicalManage');
@@ -74,6 +76,7 @@ Route::post('editRadioactive','RadioactiveElementController@edit');
 Route::post('updateRadioactive','RadioactiveElementController@update');
 Route::post('submitRadioactive','RadioactiveElementController@submit');
 Route::post('radioactiveDetail','RadioactiveElementController@detail');
+Route::get('downloadRadioactiveForm','RadioactiveElementController@downloadForm');
 
 //用户管理
 Route::get('userList','UserController@getList');
@@ -114,8 +117,13 @@ Route::get('approvedCommonChemOrders','CommonChemicalController@approvedCommonCh
 
 
 //普通设备管理
-Route::get('allCommonDevices','CommonDeviceController@allCommonDevices');
+Route::get('submittedCommonDeviceOrders','CommonDeviceController@submittedCommonDeviceOrders');
+Route::post('approveDeviceBatch','CommonDeviceController@approveDeviceBatch');
+Route::get('approvedCommonDeviceOrders','CommonDeviceController@approvedCommonDeviceOrders');
 
-//审核通过
+//放射管理
+Route::get('submittedRadioactive','RadioactiveElementController@submittedRadioactive');
+Route::get('approvedRadioactive','RadioactiveElementController@approvedRadioactive');
+Route::post('approveRadioactive','RadioactiveElementController@approveRadioactive');
 
 Route::get('test','TestController@test');

@@ -290,6 +290,9 @@
                         }
                     });
                 });
+            } else if(obj.event === 'download'){
+                var url = 'downloadRadioactiveForm?id='+obj.data.id;
+                window.open(url);
             }
         });
     </script>

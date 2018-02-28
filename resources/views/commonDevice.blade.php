@@ -305,7 +305,7 @@
         <table class="layui-table">
             <thead>
             <tr>
-                <th>试剂名称</th>
+                <th>品名</th>
                 <th>规格</th>
                 <th>数量</th>
                 <th>单价</th>
@@ -313,28 +313,28 @@
                 <th>申报日期</th>
                 <th>负责人</th>
                 <th>负责人号码</th>
-                <th>申购单位</th>
+                <th>采购单位</th>
                 <th>供应商</th>
-                <th>供应商电话</th>
-                <th>经费编号</th>
-                <th>经费名称</th>
+                {{--<th>供应商电话</th>--}}
+                {{--<th>经费编号</th>--}}
+                {{--<th>经费名称</th>--}}
             </tr>
             </thead>
             <tbody>
             <tr v-for="device in devices">
-                <td>@{{ devices.试剂名称 }}</td>
-                <td>@{{ devices.规格 }}</td>
-                <td>@{{ devices.数量 }}</td>
-                <td>@{{ devices.单价 }}</td>
-                <td>@{{ devices.小计 }}</td>
-                <td>@{{ devices.申报日期 }}</td>
-                <td>@{{ devices.申购人姓名 }}</td>
-                <td>@{{ devices.申购人号码 }}</td>
-                <td>@{{ devices.申购单位 }}</td>
-                <td>@{{ devices.供应商 }}</td>
-                <td>@{{ devices.供应商电话 }}</td>
-                <td>@{{ devices.经费编号 }}</td>
-                <td>@{{ devices.经费名称 }}</td>
+                <td>@{{ device.品名 }}</td>
+                <td>@{{ device.规格 }}</td>
+                <td>@{{ device.数量 }}</td>
+                <td>@{{ device.单价 }}</td>
+                <td>@{{ device.总金额}}</td>
+                <td>@{{ device.采购日期}}</td>
+                <td>@{{ device.采购负责人 }}</td>
+                <td>@{{ device.负责人号码 }}</td>
+                <td>@{{ device.采购单位 }}</td>
+                <td>@{{ device.供应商 }}</td>
+                {{--<td>@{{ device.供应商电话 }}</td>--}}
+                {{--<td>@{{ device.经费编号 }}</td>--}}
+                {{--<td>@{{ device.经费名称 }}</td>--}}
             </tr>
             </tbody>
         </table>
@@ -351,13 +351,14 @@
         //监听表格工具条
         table.on('tool(commonDeviceHistoryTable)', function (obj) {
             var data = obj.data;
+//            console.log(data);
             if (obj.event === 'view') {
                 app.devices = data.devices;
                 app.id = data.id;
                 app.total = data.总金额;
                 layer.open({
                     type: 1,
-                    content: $("#batchCommonDevicesDetail"),
+                    content: $("#batchCommonDeviceDetail"),
                     title: '批次详情',
                     area:['1300px']
                 });

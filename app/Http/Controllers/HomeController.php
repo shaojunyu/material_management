@@ -80,6 +80,12 @@ class HomeController extends Controller
     {
         return view('commonDeviceManage');
     }
+
+    public function RadioactiveElementManage()
+    {
+        return view('radioactiveElementManage');
+    }
+
     public function userManage()
     {
         return view('userManage');
