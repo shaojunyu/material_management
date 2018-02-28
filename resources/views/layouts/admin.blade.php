@@ -20,29 +20,6 @@
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="./home">信息录入</a></li>
             <li class="layui-nav-item"><a href="">历史记录</a></li>
-            {{--
-            <li class="layui-nav-item"><a href="">用户</a></li>
-            --}}
-            {{--
-            <li class="layui-nav-item">--}}
-            {{--<a href="javascript:;">其它系统</a>--}}
-            {{--
-            <dl class="layui-nav-child">--}}
-            {{--
-            <dd><a href="">邮件管理</a></dd>
-            --}}
-            {{--
-            <dd><a href="">消息管理</a></dd>
-            --}}
-            {{--
-            <dd><a href="">授权管理</a></dd>
-            --}}
-            {{--
-        </dl>
-        --}}
-            {{--
-        </li>
-        --}}
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -91,26 +68,19 @@
                         <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
                     </dl>
                 </li>
-                {{--<li class="layui-nav-item layui-nav-itemed">--}}
-                    {{--<a href="javascript:;">耗材管理</a>--}}
-                    {{--<dl class="layui-nav-child">--}}
-                        {{--<dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>--}}
-                        {{--<dd><a href="javascript:;">贵重设备申报 <img src="images/value.png" class="img-icon"> </a></dd>--}}
-                        {{--<dd><a href="">超链接</a></dd>--}}
-                    {{--</dl>--}}
-                {{--</li>--}}
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">系统管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
-                        <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
-                        <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
-                        <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
-                        {{--<dd><a href="">贵重设备申报管理</a></dd>--}}
-                        <dd><a href="./userManage">用户管理</a></dd>
-                    </dl>
-                </li>
-
+                @if(Auth::user()->is_admin === 1)
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">系统管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
+                            <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
+                            <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
+                            <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
+                            <dd><a href="RadioactiveElementManage">放射性元素申购管理</a></dd>
+                            <dd><a href="./userManage">用户管理</a></dd>
+                        </dl>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

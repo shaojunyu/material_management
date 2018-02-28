@@ -108,11 +108,14 @@ Route::get("allHazardousChemicalOrders","HazardousChemicalOrderController@allOrd
 Route::post("passOrder",'HazardousChemicalOrderController@passOrder');
 
 //普通试剂管理
-Route::get('allCommonChem','CommonChemicalController@allCommonChem');
+Route::get('submittedCommonChemOrders','CommonChemicalController@submittedCommonChemOrders');
+Route::post('approveChemBatch','CommonChemicalController@approveChemBatch');
+Route::get('approvedCommonChemOrders','CommonChemicalController@approvedCommonChemOrders');
+
 
 //普通设备管理
 Route::get('allCommonDevices','CommonDeviceController@allCommonDevices');
 
-
+//审核通过
 
 Route::get('test','TestController@test');

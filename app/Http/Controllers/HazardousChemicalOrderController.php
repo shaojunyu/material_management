@@ -226,7 +226,8 @@ class HazardousChemicalOrderController extends Controller
         $page = $request->input('page');
         $size = $request->input('limit');
         $data = HazardousChemicalOrder::offset($size * ($page - 1))
-            ->where('user_id', Auth::user()->id)
+            ->where('status', 'submitted')
+            ->orwhere('status', 'done')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();

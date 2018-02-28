@@ -260,4 +260,59 @@ class CommonChemicalController extends Controller
         return \response()->download($output);
     }
 
+    //管理接口
+    public function submittedCommonChemOrders(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->is_admin) {
+            return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
+        }
+        $page = $request->input('page');
+        $size = $request->input('limit');
+        $data = Batch::offset($size * ($page - 1))
+            ->where('type','=','common_chemical')
+            ->where('status','submitted')
+            ->take($size)
+            ->orderBy('id', 'desc')
+            ->get();
+        $count = Batch::where('type','=','common_chemical')
+            ->where('status','submitted')
+            ->count();
+        return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
+    }
+
+    public function approveChemBatch(Request $request)
+    {
+        $user = Auth::user();
+        $batch = Batch::find($request->input('id'));
+        if (!$user->is_admin) {
+            return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
+        }
+        $batch->status = "done";
+        if ($batch->update()){
+            return JsonResponse::create(['code' => 0, 'message' => '操作成功']);
+        }else{
+            return JsonResponse::create(['code' => 1, 'message' => '操作失败，请稍后重试']);
+        }
+    }
+
+    public function approvedCommonChemOrders(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->is_admin) {
+            return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
+        }
+        $page = $request->input('page');
+        $size = $request->input('limit');
+        $data = Batch::offset($size * ($page - 1))
+            ->where('type','=','common_chemical')
+            ->where('status','done')
+            ->take($size)
+            ->orderBy('id', 'desc')
+            ->get();
+        $count = Batch::where('type','=','common_chemical')
+            ->where('status','submitted')
+            ->count();
+        return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
+    }
 }
