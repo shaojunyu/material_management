@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HazardousChemicalInOut;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\HazardousChemical;
@@ -113,5 +114,105 @@ class HazardChemicalController extends Controller
             return JsonResponse::create(['code'=>1,'message'=>'删除失败，请重试']);
         }
 
+    }
+
+
+    //进出库管理
+    public function inTable(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $chem_id = $request->input('chem_id');
+        $data = HazardousChemicalInOut::where('chem_id',$chem_id)
+            ->where('type','in')
+            ->get();
+        $count = count($data);
+        return JsonResponse::create(['code'=>0,'count'=>$count,'data'=>$data]);
+    }
+
+    public function outTable(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $chem_id = $request->input('chem_id');
+        $data = HazardousChemicalInOut::where('chem_id',$chem_id)
+            ->where('type','out')
+            ->get();
+        $count = count($data);
+        return JsonResponse::create(['code'=>0,'count'=>$count,'data'=>$data]);
+    }
+
+    //入库
+    public function addIn(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $in = new HazardousChemicalInOut();
+        $in->setRawAttributes([
+            '数量'=>$request->input('数量'),
+            '存放地'=>$request->input('存放地'),
+            '负责人'=>$request->input('负责人'),
+            '联系电话'=>$request->input('联系电话'),
+            '备注'=>$request->input('备注'),
+            'chem_id'=>$request->input('chem_id'),
+            'type'=>'in'
+        ]);
+        if ($in->save()){
+            return JsonResponse::create(['code'=>0,'message'=>'添加成功']);
+        }else{
+            return JsonResponse::create(['code'=>1,'message'=>'添加失败，请重试']);
+        }
+    }
+
+    //出库
+    public function addOut(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $out = new HazardousChemicalInOut();
+        $out->setRawAttributes([
+            '数量'=>$request->input('数量'),
+            '存放地'=>$request->input('存放地'),
+            '负责人'=>$request->input('负责人'),
+            '联系电话'=>$request->input('联系电话'),
+            '备注'=>$request->input('备注'),
+            'chem_id'=>$request->input('chem_id'),
+            'type'=>'out'
+        ]);
+        if ($out->save()){
+            return JsonResponse::create(['code'=>0,'message'=>'添加成功']);
+        }else{
+            return JsonResponse::create(['code'=>1,'message'=>'添加失败，请重试']);
+        }
+    }
+
+    public function deleteIn(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $in = HazardousChemicalInOut::find($request->input('id'));
+        if ($in->delete()){
+            return JsonResponse::create(['code'=>0,'message'=>'删除成功']);
+        }else{
+            return JsonResponse::create(['code'=>1,'message'=>'删除成功，请重试']);
+        }
+    }
+
+    public function deleteOut(Request $request)
+    {
+        if (Auth::user()->is_admin !== 1){
+            return JsonResponse::create(['code'=>1,'message'=>'unauthorized request!']);
+        }
+        $out = HazardousChemicalInOut::find($request->input('id'));
+        if ($out->delete()){
+            return JsonResponse::create(['code'=>0,'message'=>'删除成功']);
+        }else{
+            return JsonResponse::create(['code'=>1,'message'=>'删除成功，请重试']);
+        }
     }
 }

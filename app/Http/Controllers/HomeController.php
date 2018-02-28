@@ -60,10 +60,10 @@ class HomeController extends Controller
     }
 
     //页面
-    public function hazardousChemicalManage()
+    public function hazardousChemicalManage(Request $request)
     {
         $user = Auth::user();
-        return view('chemicalManage',['user'=>$user]);
+        return view('chemicalManage',['user'=>$user,'search'=>$request->input('search')]);
     }
 
     public function hazardousChemicalOrderManage()
@@ -86,6 +86,10 @@ class HomeController extends Controller
         return view('radioactiveElementManage');
     }
 
+    public function hazardousChemicalInOutManage()
+    {
+        return view('hazardousChemicalInOutManage');
+    }
     public function userManage()
     {
         return view('userManage');
