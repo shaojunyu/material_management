@@ -201,6 +201,7 @@
                type:1,
                 title:'添加新的放射性物质申购',
                 area:['1000px','800px'],
+                offset: '50px',
                content:$("#addRadioactive")
             });
         }
