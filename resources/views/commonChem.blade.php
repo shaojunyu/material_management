@@ -19,6 +19,9 @@
                 <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史批次</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonChem()">添加</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">合并到统一批次</button>
+                <button class="layui-btn" style="margin-left: 20px" id="uploadButton" onclick="uploadTable()">一键导入
+                </button>
+                <a style="margin-left: 20px" href="docs/普通试剂导入模板.xlsx">下载模板</a>
             </blockquote>
             <table id="commonChemTable" lay-filter="commonChemTable">
             </table>
@@ -303,7 +306,7 @@
                 setTimeout(function () {
                     table.reload("commonChemTable");
                     table.reload("commonChemHistoryTable");
-                },2000);
+                }, 2000);
             });
         }
 
@@ -342,16 +345,18 @@
                 , page: true //开启分页
                 , cols: [[ //表头
                     {type: 'checkbox'}
-                    , {field: 'id', title: '批次编号', width:100}
+                    , {field: 'id', title: '批次编号', width: 100}
                     , {field: 'intro', title: '内容'}
                     , {field: '总金额', title: '总金额(￥)'}
                     , {field: 'created_at', title: '创建时间'}
-                    , {field: 'status', title: '状态',templet: function (d){
-                        if(d.status === 'submitted')
-                            return "已提交，等待审核";
-                        if (d.status === "done")
-                            return "已完成审核";
-                    }}
+                    , {
+                        field: 'status', title: '状态', templet: function (d) {
+                            if (d.status === 'submitted')
+                                return "已提交，等待审核";
+                            if (d.status === "done")
+                                return "已完成审核";
+                        }
+                    }
                     , {
                         fixed: 'right', align: 'center', templet: function (d) {
                             if (d.status === "applying")
@@ -371,6 +376,40 @@
                     layer.closeAll();
                 }
             });
+        }
+
+
+        //上传
+        var upload = layui.upload; //得到 upload 对象
+        upload.render({
+            elem: '#uploadButton',
+            url: 'uploadTable',
+            method: 'post',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                type: 'commonChem'
+            },
+            exts: 'xlsx',
+            done: function () {
+                layer.msg('导入成功', {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    window.location.reload();
+                });
+            },
+            error: function () {
+                layer.msg('导入错位，请检查数据格式，重试！', {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    window.location.reload();
+                });
+            }
+        });
+
+        function uploadTable() {
+
         }
 
     </script>
@@ -422,8 +461,8 @@
             el: '#batchCommonChemDetail',
             data: {
                 chemicals: [],
-                id:'',
-                total:0
+                id: '',
+                total: 0
             }
         });
         //监听表格工具条
@@ -437,7 +476,7 @@
                     type: 1,
                     content: $("#batchCommonChemDetail"),
                     title: '批次详情',
-                    area:['1300px']
+                    area: ['1300px']
                 });
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除该批次数据么？批次号：' + obj.data.id, function (index) {
@@ -455,7 +494,7 @@
                 var ids = [];
                 var total = 0;
                 var confirm = "<h3>您将下载该批次的申报文件，请确认!<br>";
-                confirm += "<h3>批次号："+data.id+"<br><ul>";
+                confirm += "<h3>批次号：" + data.id + "<br><ul>";
                 data.chemicals.forEach(function (item) {
                     ids.push(item.id);
                     confirm += "<li><span class=\"layui-badge-dot layui-bg-black\"></span>&nbsp;" + item.试剂名称 + "</li>";

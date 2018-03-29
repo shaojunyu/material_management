@@ -12,6 +12,7 @@
         "hashids/hashids": "^2.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "phpoffice/phpspreadsheet": "^1.2",
         "phpoffice/phpword": "^0.14.0"
     },
     "require-dev": {
