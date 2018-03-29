@@ -19,6 +19,8 @@
                 <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史批次</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonDevice()">添加</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">合并到统一批次</button>
+                <button class="layui-btn" style="margin-left: 20px" id="uploadButton">一键导入</button>
+                <a style="margin-left: 20px" href="docs/低值设备导入模板.xlsx">下载模板</a>
             </blockquote>
             <table id="commonDeviceTable" lay-filter="commonDeviceTable">
 
@@ -296,6 +298,36 @@
                 }
             });
         }
+
+        //上传
+        var upload = layui.upload; //得到 upload 对象
+        upload.render({
+            elem: '#uploadButton',
+            url: 'uploadTable',
+            method: 'post',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                type: 'commonDevice'
+            },
+            exts: 'xlsx',
+            done: function () {
+                layer.msg('导入成功', {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    window.location.reload();
+                });
+            },
+            error: function () {
+                layer.msg('导入错位，请检查数据格式，重试！', {
+                    icon: 1,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function () {
+                    window.location.reload();
+                });
+            }
+        });
+
     </script>
     {{--详情模板--}}
     <div id="batchCommonDeviceDetail" hidden style="padding: 10px;">

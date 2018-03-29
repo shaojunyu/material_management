@@ -60,6 +60,7 @@ Route::get('downloadCommonChemForm','CommonChemicalController@downloadForm');
 Route::post('batchDeleteCommonChem','CommonChemicalController@batchDelete');
 Route::get('batchDownloadCommonChemForm','CommonChemicalController@batchDownload');
 
+
 //普通设备
 Route::get('commonDeviceList','CommonDeviceController@getList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');
@@ -99,6 +100,11 @@ Route::post('submitOrder','HazardousChemicalOrderController@submitOrder');
 Route::get('viewOrderDetail','HazardousChemicalOrderController@orderDetail');
 Route::get('downloadOrderForm','HazardousChemicalOrderController@downloadOrder');
 //Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
+
+
+//上传接口
+Route::post('uploadTable','HomeController@uploadTable');
+
 
 //危化品管理
 Route::get('/hazardousChemicalList','HazardChemicalController@getList');
