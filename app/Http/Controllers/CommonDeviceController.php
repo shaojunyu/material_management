@@ -200,6 +200,9 @@ class CommonDeviceController extends Controller
         $items = $batch->devices;
         $total = $batch->总金额;
         $tmp = '../storage/app/docs/华中科技大学低值设备验收单.docx';
+        if($total >= 1000){
+            $tmp = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
+        }
         $tmp = str_replace('/', DIRECTORY_SEPARATOR, $tmp);
         $templateProcessor = new TemplateProcessor($tmp);
         $templateProcessor->cloneRow('col1', count($items));
