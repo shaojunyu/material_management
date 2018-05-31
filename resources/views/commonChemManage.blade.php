@@ -250,7 +250,7 @@
                     type: 1,
                     content: $("#batchCommonChemDetail"),
                     title: '批次详情',
-                    area: ['1300px']
+                    area: ['1300px','800px']
                 });
             } else if (obj.event === 'approve') {
                 layer.confirm('确定“审核通过”该批次数据么？批次号：' + obj.data.id, function (index) {

@@ -75,7 +75,7 @@
                             <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
                             {{--<dd><a href="./hazardousChemicalInOutManage">危化品进出库管理</a></dd>--}}
                             <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
-                            <dd><a href="CommonChemicalManage">普通试剂管理管理</a></dd>
+                            <dd><a href="CommonChemicalManage">普通试剂管理</a></dd>
                             <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
                             <dd><a href="RadioactiveElementManage">放射性元素申购管理</a></dd>
                             <dd><a href="./userManage">用户管理</a></dd>
