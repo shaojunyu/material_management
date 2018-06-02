@@ -49,8 +49,7 @@
             , limit: 20
             , page: true //开启分页
             , cols: [[ //表头
-                {type: 'checkbox'}
-                , {field: 'id', title: '批次编号', width: 100}
+                {field: 'id', title: '批次编号', width: 100}
                 , {field: 'intro', title: '内容'}
                 , {field: '总金额', title: '总金额(￥)',width: 100}
                 , {field: 'created_at', title: '创建时间'}
@@ -86,8 +85,9 @@
             , limit: 20
             , page: true //开启分页
             , cols: [[ //表头
-                {type: 'checkbox'}
-                , {field: 'id', title: '批次编号', width: 100}
+                // {type: 'checkbox'}
+                // ,
+                {field: 'id', title: '批次编号', width: 100}
                 , {field: 'intro', title: '内容'}
                 , {field: '总金额', title: '总金额(￥)'}
                 , {field: 'created_at', title: '创建时间'}

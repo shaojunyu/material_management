@@ -142,14 +142,15 @@ class CommonChemicalController extends Controller
         $templateProcessor->setValue('供货商', $item->供应商);
         $templateProcessor->setValue('total', $this->NumToCNMoney($total, true, false) . "(￥ $total)");
 
-        $output = '../storage/app/download/普通试剂-批次' .$batch->id. '.docx';
-        $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $batch->setAttribute('总金额', $total);
         $batch->save();
         foreach ($items as $item){
             $item->setAttribute('batch_id',$batch->id);
             $item->save();
         }
+
+        $output = '../storage/app/download/普通试剂-批次编号' .$batch->id. '.docx';
+        $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $templateProcessor->saveAs($output);
         return \response()->download($output);
     }
@@ -251,7 +252,7 @@ class CommonChemicalController extends Controller
         $templateProcessor->setValue('供货商', $item->供应商);
         $templateProcessor->setValue('total', $this->NumToCNMoney($total, true, false) . "(￥ $total)");
 
-        $output = '../storage/app/download/普通试剂-批次' .$batch->id. '.docx';
+        $output = '../storage/app/download/普通试剂-批次编号' .$batch->id. '.docx';
         $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $batch->setAttribute('总金额', $total);
         $batch->save();
