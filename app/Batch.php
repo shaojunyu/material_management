@@ -81,6 +81,18 @@ class Batch extends Model
             return true;
         return false;
     }
+//
+//    public function resolveCommonChemicals()
+//    {
+//        $chemicals = $this->hasMany('App\CommonChemical','batch_id','id');
+//        if($chemicals->count() === 0)
+//            return true;
+//        foreach ($chemicals as $chem){
+//            $chem->batch_id = null;
+//            $chem->save();
+//        }
+//        return true;
+//    }
 
     public function deleteCommonDevices()
     {

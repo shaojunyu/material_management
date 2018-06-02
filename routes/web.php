@@ -59,7 +59,7 @@ Route::post('checkIfHazard','CommonChemicalController@checkIfHazard');
 Route::get('downloadCommonChemForm','CommonChemicalController@downloadForm');
 Route::post('batchDeleteCommonChem','CommonChemicalController@batchDelete');
 Route::get('batchDownloadCommonChemForm','CommonChemicalController@batchDownload');
-
+Route::post('resolveCommonChemBatch','CommonChemicalController@resolveCommonChemBatch');
 
 //普通设备
 Route::get('commonDeviceList','CommonDeviceController@getList');
@@ -69,6 +69,7 @@ Route::post('commonDeviceDetail','CommonDeviceController@getDetail');
 Route::get('downloadCommonDeviceForm','CommonDeviceController@downloadDeviceForm');
 Route::get('batchDownloadCommonDeviceForm','CommonDeviceController@batchDownload');
 Route::get('commonDeviceHistoryList','CommonDeviceController@getHistoryList');
+Route::post('resolveCommonDeviceBatch','CommonDeviceController@resolveCommonDeviceBatch');
 
 //放射性元素
 Route::post('addRadioactive','RadioactiveElementController@add');

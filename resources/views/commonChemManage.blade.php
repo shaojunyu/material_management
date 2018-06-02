@@ -52,10 +52,10 @@
                 {type: 'checkbox'}
                 , {field: 'id', title: '批次编号', width: 100}
                 , {field: 'intro', title: '内容'}
-                , {field: '总金额', title: '总金额(￥)'}
+                , {field: '总金额', title: '总金额(￥)',width: 100}
                 , {field: 'created_at', title: '创建时间'}
                 , {
-                    field: 'status', title: '状态', templet: function (d) {
+                    field: 'status', title: '状态',width: 150, templet: function (d) {
                         if (d.status === 'submitted')
                             return "已提交，等待审核";
                         if (d.status === "done")
@@ -70,6 +70,7 @@
                         if (d.status === "submitted")
                             return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="approve">通过</a>\n' +
                                 '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n' +
+                                '<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="resolve">解除批次</a>\n' +
                                 '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
                         if (d.status === "done")
                             return '<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载报表</a>\n' +
@@ -144,7 +145,7 @@
                 <td>@{{ chemical.规格 }}</td>
                 <td>@{{ chemical.数量 }}</td>
                 <td>@{{ chemical.单价 }}</td>
-                <td>@{{ chemical.小计 }}</td>
+                <td>@{{ chemical.总金额 }}</td>
                 <td>@{{ chemical.申报日期 }}</td>
                 <td>@{{ chemical.申购人姓名 }}</td>
                 <td>@{{ chemical.申购人号码 }}</td>
@@ -176,7 +177,7 @@
                 layer.open({
                     type: 1,
                     content: $("#batchCommonChemDetail"),
-                    title: '批次详情1',
+                    title: '批次详情',
                     area: ['1300px','700px']
                 });
             } else if (obj.event === 'approve') {
@@ -236,6 +237,30 @@
                     table.reload("approvedCommonChemOrdersTable");
                     table.reload("submittedCommonChemOrdersTable");
                     layer.close(index);
+                });
+            }else if (obj.event === "resolve"){//分解批次
+                var ids = [];
+                var total = 0;
+                var confirm = "<h3>您将解除该批次，请确认!<br>";
+                confirm += "<h3>批次号：" + data.id + "<br><ul>";
+                data.chemicals.forEach(function (item) {
+                    ids.push(item.id);
+                    confirm += "<li><span class=\"layui-badge-dot layui-bg-black\"></span>&nbsp;" + item.试剂名称 + "</li>";
+                    total += item.总金额;
+                });
+                confirm += "</ul>";
+                var url = 'batchDownloadCommonChemForm?id=' + data.id;
+                layer.confirm(confirm, function (index) {
+                    $.post('resolveCommonChemBatch', {
+                        id: obj.data.id,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    }, function (d) {
+                        layer.msg(d.message);
+                        if (d.code == 0) {
+                            table.reload("submittedCommonChemOrdersTable")
+                            // table.reload("commonChemTable")
+                        }
+                    });
                 });
             }
         });
