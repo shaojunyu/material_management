@@ -16,11 +16,11 @@
         <a href="home">
             <div class="layui-logo">生科院耗材管理系统</div>
         </a>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="./home">信息录入</a></li>
-            <li class="layui-nav-item"><a href="">历史记录</a></li>
-        </ul>
+        {{--<!-- 头部区域（可配合layui已有的水平导航） -->--}}
+        {{--<ul class="layui-nav layui-layout-left">--}}
+            {{--<li class="layui-nav-item"><a href="./home">信息录入</a></li>--}}
+            {{--<li class="layui-nav-item"><a href="">历史记录</a></li>--}}
+        {{--</ul>--}}
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
@@ -61,20 +61,29 @@
                     <dl class="layui-nav-child">
                         <dd><a href="HazardousChemical">危险化学品申购 <img src="images/danger-15.png" class="img-icon"></a>
                         </dd>
-                        <dd><a href="HazardousChemicalOrder">危化品申购记录 <img src="images/deviceList.png" class="img-icon"> </a></dd>
+                        <dd><a href="HazardousChemicalOrder">危化品申购记录 <img src="images/deviceList.png" class="img-icon">
+                            </a></dd>
                         <dd><a href="RadioactiveElement">放射性元素申购 <img src="images/radioactive.png" class="img-icon"></a>
                         </dd>
                         <dd><a href="CommonChemical">普通试剂入库 <img src="images/chemical.png" class="img-icon"></a></dd>
                         <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
                     </dl>
                 </li>
+                @if(Auth::user()->p_id === null)
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">子账户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./subUserManage">子账户管理 <img src="images/user.png" class="img-icon"></a></dd>
+                        </dl>
+                    </li>
+                @endif
                 @if(Auth::user()->is_admin === 1)
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">系统管理</a>
                         <dl class="layui-nav-child">
                             <dd><a href="./hazardousChemicalManage">危化品管理</a></dd>
                             {{--<dd><a href="./hazardousChemicalInOutManage">危化品进出库管理</a></dd>--}}
-                            <dd><a href="HazardousChemicalOrderManage">危化品申报管理</a></dd>
+                            <dd><a href="HazardousChemicalOrderManage">危化品申购管理</a></dd>
                             <dd><a href="CommonChemicalManage">普通试剂管理</a></dd>
                             <dd><a href="CommonDeviceManage">低值设备管理 </a></dd>
                             <dd><a href="RadioactiveElementManage">放射性元素申购管理</a></dd>
@@ -108,6 +117,8 @@
             <col>
         </colgroup>
         <tbody>
+
+        {{--<tr>{{ Auth::user() }}</tr>--}}
         <tr>
             <td>登录名</td>
             <td>{{ Auth::user()->staff_id }}</td>
@@ -123,6 +134,26 @@
                     否
                 @else
                     是
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <td>是否为二级用户</td>
+            <td>
+                @if(Auth::user()->p_id)
+                    是
+                @else
+                    否
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <td>父账户</td>
+            <td>
+                @if(Auth::user()->p_id)
+                    {{ Auth::user()->p_user[0]->staff_id.'（'.Auth::user()->p_user[0]->name.'）' }}
+                @else
+                    无
                 @endif
             </td>
         </tr>

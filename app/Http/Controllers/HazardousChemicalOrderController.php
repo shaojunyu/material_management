@@ -263,7 +263,7 @@ class HazardousChemicalOrderController extends Controller
         }
         $items = HazardousChemicalOrderItem::where('order_id',$order->id)
             ->get();
-        $zip = "../storage/app/orderForm/".$order->id."危化品申购文件.zip";
+        $zip = "../storage/app/orderForm/危化品申购文件-业务号-".$order->id.".zip";
         if (file_exists($zip)){
             unlink($zip);
         }
@@ -352,6 +352,6 @@ class HazardousChemicalOrderController extends Controller
             }
         }
         $zipFile->close();
-        return response()->download("../storage/app/orderForm/".$order->id."危化品申购文件.zip");
+        return response()->download($zip);
     }
 }

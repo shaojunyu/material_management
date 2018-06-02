@@ -48,6 +48,8 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    protected $appends = ['p_user'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -62,5 +64,10 @@ class User extends Authenticatable
     {
         return SafePlaceModel::where('user_id',$this->id)->get();
 //        return $this->hasMany('App\SafePlaceModel','id','user_id');
+    }
+
+    public function getPUserAttribute()
+    {
+        return $this->hasOne('App\User','id','p_id')->get();
     }
 }

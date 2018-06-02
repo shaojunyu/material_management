@@ -155,7 +155,7 @@ class RadioactiveElementController extends Controller
                 $radio->射线装置名称,$radio->台数,$radio->厂家名称,$radio->辐射许可证编号,
                 $radio->通讯地址,$radio->联系人
                 ]);
-        $output = '../storage/app/download/放射性元素'.$radio->id."-华中科技大学放射性同位素与射线装置申购审批表.docx";
+        $output = '../storage/app/download/业务编号-'.$radio->id."-华中科技大学放射性同位素与射线装置申购审批表.docx";
         $templateProcessor->saveAs($output);
         return response()->download($output);
     }

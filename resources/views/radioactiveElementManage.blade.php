@@ -45,7 +45,7 @@
             , page: true //开启分页
             , cols: [[ //表头
                 {type: 'checkbox'}
-                ,{field: 'id', title: '编号'}
+                ,{field: 'id', title: '业务编号'}
                 , {field: '放射性同位素名称', title: '放射性同位素'}
                 , {field: '射线装置名称', title: '射线装置名称'}
                 , {field: '实验室负责人', title: '实验室负责人'}
@@ -81,7 +81,7 @@
             , page: true //开启分页
             , cols: [[ //表头
                 {type: 'checkbox'}
-                ,{field: 'id', title: '编号'}
+                ,{field: 'id', title: '业务编号'}
                 , {field: '放射性同位素名称', title: '放射性同位素'}
                 , {field: '射线装置名称', title: '射线装置名称'}
                 , {field: '实验室负责人', title: '实验室负责人'}

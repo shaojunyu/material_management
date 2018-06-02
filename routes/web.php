@@ -88,6 +88,14 @@ Route::post('editUser','UserController@editUserForm');
 Route::post('updateUser','UserController@updateUser');
 Route::post('deleteUser','UserController@deleteUser');
 
+//子用户管理
+Route::get('subUserManage','UserController@subUserManage');
+Route::get('getSubUserList','UserController@getSubUserList');
+Route::post('addSubUser','UserController@addSubUser');
+Route::post('editSubUser','UserController@editSubUser');
+Route::post('deleteSubUser','UserController@deleteSubUser');
+
+
 //危化品申购
 Route::get('hazardChemCart','HazardousChemicalOrderController@getCart');
 Route::post('addItemToHazardChemCart','HazardousChemicalOrderController@addItemToCart');
