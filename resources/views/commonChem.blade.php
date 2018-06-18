@@ -16,9 +16,9 @@
             <blockquote class="layui-elem-quote">
                 <img src="images/chemical2.png">
                 <h2 style="display: inline">普通试剂入库</h2>
-                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史批次</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史记录</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonChem()">添加</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">合并到统一批次</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">提交审核</button>
                 <button class="layui-btn" style="margin-left: 20px" id="uploadButton" onclick="uploadTable()">一键导入
                 </button>
                 <a style="margin-left: 20px" href="docs/普通试剂导入模板.xlsx">下载模板</a>
@@ -27,7 +27,7 @@
             </table>
             <div>
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                    <legend>历史批次</legend>
+                    <legend>历史记录</legend>
                 </fieldset>
                 <table id="commonChemHistoryTable" lay-filter="commonChemHistoryTable">
                 </table>

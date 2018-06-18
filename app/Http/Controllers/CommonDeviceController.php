@@ -169,6 +169,8 @@ class CommonDeviceController extends Controller
             $item->setAttribute('batch_id', $batch->id);
             $item->save();
         }
+
+        $templateProcessor->setValue('业务号', $batch->id);
         $output = '../storage/app/download/低值设备-批次编号' . $batch->id . '.docx';
         $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $templateProcessor->saveAs($output);
@@ -218,8 +220,9 @@ class CommonDeviceController extends Controller
         $templateProcessor->setValue('采购单位', $item->采购单位);
         $templateProcessor->setValue('供货商', $item->供应商);
         $templateProcessor->setValue('total', $this->NumToCNMoney($total, true, false) . "(￥ $total)");
+        $templateProcessor->setValue('业务号', $batch->id);
 
-        $output = '../storage/app/download/地址设备-批次编号' . $batch->id . '.docx';
+        $output = '../storage/app/download/低值设备-批次编号' . $batch->id . '.docx';
         $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $batch->setAttribute('总金额', $total);
         $batch->save();

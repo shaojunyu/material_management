@@ -16,9 +16,9 @@
             <blockquote class="layui-elem-quote">
                 <img src="images/device2.png">
                 <h2 style="display: inline">低值设备入库 &nbsp;(适用于单价1000元以下的仪器设备)</h2>
-                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史批次</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史记录</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonDevice()">添加</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">合并到统一批次</button>
+                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">提交审核</button>
                 <button class="layui-btn" style="margin-left: 20px" id="uploadButton">一键导入</button>
                 <a style="margin-left: 20px" href="docs/低值设备导入模板.xlsx">下载模板</a>
             </blockquote>
@@ -27,7 +27,7 @@
             </table>
             <div>
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                    <legend>历史批次</legend>
+                    <legend>历史记录</legend>
                 </fieldset>
                 <table id="commonDeviceHistoryTable" lay-filter="commonDeviceHistoryTable">
                 </table>

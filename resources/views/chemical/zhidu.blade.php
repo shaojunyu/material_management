@@ -40,4 +40,10 @@
                class="layui-input">
     </div>
 </div>
+<div class="layui-inline">
+    <label class="layui-form-label">存放地点</label>
+    <div class="layui-input-inline">
+        <input type="text" name="{{ $item->id }}存放地点" value="{{ $item->存放地点 }}" placeholder="具体到楼号和房间号" required  lay-verify="required" class="layui-input">
+    </div>
+</div>
 <hr>
