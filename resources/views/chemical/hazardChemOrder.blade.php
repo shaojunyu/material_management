@@ -2,21 +2,28 @@
     <form class="layui-form" id="orderForm" disabled="">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">负责人姓名</label>
+                <label class="layui-form-label"> 负责人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="申购人姓名" lay-verify="required"
+                           class="layui-input" value="{{$order->fuzeren}}">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">申购人姓名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="申购人姓名" lay-verify="required"
                            class="layui-input" value="{{$order->申购人姓名}}">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">手机号</label>
+                <label class="layui-form-label">申购人手机号</label>
                 <div class="layui-input-inline">
                     <input type="text" name="申购人手机号" lay-verify="required|phone"
                            class="layui-input" value="{{$order->申购人手机号}}">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">身份证号</label>
+                <label class="layui-form-label">申购人身份证号</label>
                 <div class="layui-input-inline">
                     <input type="text" name="申购人身份证号" lay-verify="required|identity"
                            class="layui-input" value="{{$order->申购人身份证号}}">
