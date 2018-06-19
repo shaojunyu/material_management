@@ -98,7 +98,11 @@ class CommonDeviceController extends Controller
             list($num, $dec) = explode('.', $num);
             $dec = strval(round($dec, 2));
             if ($mode) {
-                $retval .= "{$char[$dec['0']]}角{$char[$dec['1']]}分";
+                if (strlen($dec) === 1){
+                    $retval .= "{$char[$dec['0']]}角";
+                }else{
+                    $retval .= "{$char[$dec['0']]}角{$char[$dec['1']]}分";
+                }
             } else {
                 for ($i = 0, $c = strlen($dec); $i < $c; $i++) {
                     $retval .= $char[$dec[$i]];
@@ -202,28 +206,65 @@ class CommonDeviceController extends Controller
         $items = $batch->devices;
         $total = $batch->总金额;
         $tmp = '../storage/app/docs/华中科技大学低值设备验收单.docx';
-        if($total >= 1000){
-            $tmp = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
-        }
+        $tmp2 = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
+//        if($total >= 1000){
+//            $tmp = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
+//        }
         $tmp = str_replace('/', DIRECTORY_SEPARATOR, $tmp);
+        $tmp2 = str_replace('/', DIRECTORY_SEPARATOR, $tmp2);
         $templateProcessor = new TemplateProcessor($tmp);
-        $templateProcessor->cloneRow('col1', count($items));
-        $i = 1;
+        $templateProcessor2 = new TemplateProcessor($tmp2);
+
+        $i = 0;//小于1000
+        $j = 0;//大于1000
         foreach ($items as $item) {
-            $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
-            $templateProcessor->setValue('col2#' . $i, $item->规格);
-            $templateProcessor->setValue('col3#' . $i, $item->单价);
-            $templateProcessor->setValue('col4#' . $i, $item->数量);
-            $templateProcessor->setValue('col5#' . $i, $item->总金额);
-            $i = $i + 1;
+            if ($item->单价 < 1000) {
+                $i = $i + 1;
+            } else {
+                $j = $j + 1;
+            }
+        }
+        $templateProcessor->cloneRow('col1', $i);
+        $templateProcessor2->cloneRow('col1', $j);
+
+        $i = 1;
+        $j = 1;
+        $total1 = 0;
+        $total2 = 0;
+        foreach ($items as $item) {
+            if ($item->单价 < 1000){
+                $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
+                $templateProcessor->setValue('col2#' . $i, $item->规格);
+                $templateProcessor->setValue('col3#' . $i, $item->单价);
+                $templateProcessor->setValue('col4#' . $i, $item->数量);
+                $templateProcessor->setValue('col5#' . $i, $item->总金额);
+                $i = $i + 1;
+                $total1 = $total1 + $item->总金额;
+            }else{
+                $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
+                $templateProcessor2->setValue('col2#' . $j, $item->规格);
+                $templateProcessor2->setValue('col3#' . $j, $item->单价);
+                $templateProcessor2->setValue('col4#' . $j, $item->数量);
+                $templateProcessor2->setValue('col5#' . $j, $item->总金额);
+                $j = $j + 1;
+                $total2 = $total2 + $item->总金额;
+            }
         }
         $templateProcessor->setValue('采购单位', $item->采购单位);
         $templateProcessor->setValue('供货商', $item->供应商);
-        $templateProcessor->setValue('total', $this->NumToCNMoney($total, true, false) . "(￥ $total)");
+        $templateProcessor->setValue('total', $this->NumToCNMoney($total1, true, false) . "(￥ $total1)");
         $templateProcessor->setValue('业务号', $batch->id);
+
+        $templateProcessor2->setValue('采购单位', $item->采购单位);
+        $templateProcessor2->setValue('供货商', $item->供应商);
+        $templateProcessor2->setValue('total', $this->NumToCNMoney($total2, true, false) . "(￥ $total2)");
+        $templateProcessor2->setValue('业务号', $batch->id);
 
         $output = '../storage/app/download/低值设备-批次编号' . $batch->id . '.docx';
         $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
+        $output2 = '../storage/app/download/低值设备-批次编号' . $batch->id . '.docx';
+        $output2 = str_replace('/', DIRECTORY_SEPARATOR, $output2);
+
         $batch->setAttribute('总金额', $total);
         $batch->save();
         foreach ($items as $item) {
@@ -231,7 +272,23 @@ class CommonDeviceController extends Controller
             $item->save();
         }
         $templateProcessor->saveAs($output);
-        return \response()->download($output);
+        $templateProcessor2->saveAs($output2);
+        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zipFile = new \ZipArchive();
+        if (file_exists($zip)){
+            unlink($zip);
+        }
+        $zipFile->open($zip,\ZipArchive::CREATE);
+        if ($i > 1){
+            $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
+        }
+        if ($j > 1){
+            $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
+        }
+        $zipFile->close();
+
+        return \response()->download($zip);
+//        return \response()->download($output);
     }
 
     //管理接口
@@ -242,18 +299,18 @@ class CommonDeviceController extends Controller
         if ($batch->user_id != $user->id && !$user->is_admin) {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
-        if ($batch->status === "done"){
+        if ($batch->status === "done") {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
         $devices = $batch->devices;
-        foreach ($devices as $d){
+        foreach ($devices as $d) {
             $d->batch_id = null;
             $d->save();
         }
 
-        if ($batch->delete()){
+        if ($batch->delete()) {
             return JsonResponse::create(['code' => 0, 'message' => '操作成功']);
-        }else{
+        } else {
             return JsonResponse::create(['code' => 1, 'message' => '操作失败，请稍后重试']);
         }
     }
@@ -267,13 +324,13 @@ class CommonDeviceController extends Controller
         $page = $request->input('page');
         $size = $request->input('limit');
         $data = Batch::offset($size * ($page - 1))
-            ->where('type','=','common_device')
-            ->where('status','submitted')
+            ->where('type', '=', 'common_device')
+            ->where('status', 'submitted')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = Batch::where('type','=','common_device')
-            ->where('status','submitted')
+        $count = Batch::where('type', '=', 'common_device')
+            ->where('status', 'submitted')
             ->count();
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
@@ -286,9 +343,9 @@ class CommonDeviceController extends Controller
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
         $batch->status = "done";
-        if ($batch->update()){
+        if ($batch->update()) {
             return JsonResponse::create(['code' => 0, 'message' => '操作成功']);
-        }else{
+        } else {
             return JsonResponse::create(['code' => 1, 'message' => '操作失败，请稍后重试']);
         }
     }
@@ -302,13 +359,13 @@ class CommonDeviceController extends Controller
         $page = $request->input('page');
         $size = $request->input('limit');
         $data = Batch::offset($size * ($page - 1))
-            ->where('type','=','common_device')
-            ->where('status','done')
+            ->where('type', '=', 'common_device')
+            ->where('status', 'done')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = Batch::where('type','=','common_device')
-            ->where('status','submitted')
+        $count = Batch::where('type', '=', 'common_device')
+            ->where('status', 'submitted')
             ->count();
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }

@@ -39,7 +39,7 @@ class HazardousChemicalOrder extends Model
 {
     protected $table = 'hazardous_chem_order';
 
-    protected $appends = ['intro'];
+    protected $appends = ['intro', 'fuzeren'];
 
     public function getIntroAttribute()
     {
@@ -52,5 +52,16 @@ class HazardousChemicalOrder extends Model
             $intro .= $item['中文名'];
         }
         return $intro." 等";
+    }
+
+    public function getFuzerenAttribute()
+    {
+        $u = User::find($this->user_id);
+        if ($u->p_id){
+            $u2 = User::find($u->p_id);
+            return $u2->name;
+        }else{
+            return $u->name;
+        }
     }
 }

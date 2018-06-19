@@ -22,7 +22,8 @@
             page: true,
             cols:[[
                 {field: 'id', title: '申购业务号'},
-                {field: '申购人姓名', title: '负责人'},
+                {field: '申购人姓名', title: '申购人'},
+                {field: 'fuzeren', title: '负责人'},
                 {field: 'intro', title:'内容'},
                 {field: 'status', title: '申购状态', templet:function (d) {
                     if (d.status === "submitted")
