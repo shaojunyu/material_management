@@ -23,7 +23,7 @@
             cols:[[
                 {field: 'id', title: '申购业务号'},
                 {field: '申购人姓名', title: '申购人'},
-                {field: 'fuzeren', title: '负责人'},
+                {field: 'fezeren', title: '负责人'},
                 {field: 'intro', title:'内容'},
                 {field: 'status', title: '申购状态', templet:function (d) {
                     if (d.status === "submitted")
@@ -43,10 +43,8 @@
                             '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
                     if (d.status === "done")
                         return '<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">下载报表</a>\n' +
-                            '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n' +
-                            '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
-
-                    }}
+                            '<a class="layui-btn layui-btn-xs" lay-event="view">查看</a>\n';
+                }}
             ]]
         });
         //监听表格工具条

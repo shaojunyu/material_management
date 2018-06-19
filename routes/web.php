@@ -66,6 +66,7 @@ Route::get('commonDeviceList','CommonDeviceController@getList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');
 Route::post('addCommonDevice','CommonDeviceController@addDevice');
 Route::post('commonDeviceDetail','CommonDeviceController@getDetail');
+Route::post('batchDeleteCommonDevice','CommonDeviceController@batchDelete');
 Route::get('downloadCommonDeviceForm','CommonDeviceController@downloadDeviceForm');
 Route::get('batchDownloadCommonDeviceForm','CommonDeviceController@batchDownload');
 Route::get('commonDeviceHistoryList','CommonDeviceController@getHistoryList');

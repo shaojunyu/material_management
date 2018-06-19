@@ -69,6 +69,21 @@ class CommonDeviceController extends Controller
         return view('chemical.commonChemDetail', ['chemical' => $device]);
     }
 
+    public function batchDelete(Request $request)
+    {
+        $batch = Batch::find($request->input('id'));
+        $user = Auth::user();
+        if ($batch->user_id != $user->id && !$user->is_admin) {
+            return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
+        }
+        if ($batch->status === 'done'){
+            return JsonResponse::create(['code' => 1, 'message' => '无法删除']);
+        }
+        if($batch->deleteCommonChemicals() && $batch->delete())
+            return JsonResponse::create(['code' => 0, 'message' => '删除成功']);
+        return JsonResponse::create(['code' => 1, 'message' => '删除失败']);
+    }
+
     public function allCommonDevices(Request $request)
     {
         $user = Auth::user();
