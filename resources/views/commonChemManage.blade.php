@@ -119,7 +119,7 @@
     {{--详情模板--}}
     <div id="batchCommonChemDetail" hidden style="padding: 10px;">
         <fieldset class="layui-elem-field layui-field-title">
-            <legend>批次编号：@{{ id }} &nbsp;| &nbsp;总金额：@{{ total }}</legend>
+            <legend>批次编号：@{{ id }} &nbsp;| &nbsp;总金额：@{{ total }} | 负责人：@{{ fuzeren }}</legend>
         </fieldset>
         <table class="layui-table">
             <thead>
@@ -130,8 +130,8 @@
                 <th>单价</th>
                 <th>小计</th>
                 <th>申报日期</th>
-                <th>负责人</th>
-                <th>负责人号码</th>
+                <th>申购人</th>
+                <th>申购人号码</th>
                 <th>申购单位</th>
                 <th>供应商</th>
                 <th>供应商电话</th>
@@ -164,7 +164,8 @@
             data: {
                 chemicals: [],
                 id: '',
-                total: 0
+                total: 0,
+                fuzeren:""
             }
         });
         //监听表格工具条
@@ -174,6 +175,7 @@
                 app.chemicals = data.chemicals;
                 app.id = data.id;
                 app.total = data.总金额;
+                app.fuzeren = data.fuzeren;
                 layer.open({
                     type: 1,
                     content: $("#batchCommonChemDetail"),
@@ -271,6 +273,7 @@
                 app.chemicals = data.chemicals;
                 app.id = data.id;
                 app.total = data.总金额;
+                app.fuzeren = data.fuzeren;
                 layer.open({
                     type: 1,
                     content: $("#batchCommonChemDetail"),

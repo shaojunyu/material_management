@@ -31,7 +31,7 @@ class Batch extends Model
 {
     protected $table = 'batch';
 
-    protected $appends = ['chemicals','intro','devices'];
+    protected $appends = ['chemicals','intro','devices','fuzeren'];
 
     public function getChemicalsAttribute()
     {
@@ -70,6 +70,17 @@ class Batch extends Model
     {
         $devices = $this->hasMany('App\CommonDevice','batch_id','id');
         return $devices->get();
+    }
+
+    public function getFuzerenAttribute()
+    {
+        $u = User::find($this->user_id);
+        if ($u->p_id){
+            $u2 = User::find($u->p_id);
+            return $u2->name;
+        }else{
+            return $u->name;
+        }
     }
 
     public function deleteCommonChemicals()
