@@ -12,7 +12,7 @@
                     <input hidden name="order_id" value="{{$order->id}}">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">负责人姓名</label>
+                            <label class="layui-form-label">申购人姓名</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="申购人姓名" lay-verify="required"
                                        class="layui-input" value="{{$order->申购人姓名}}">
