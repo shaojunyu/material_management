@@ -46,6 +46,7 @@
             , cols: [[ //表头
                 // {type: 'checkbox'}
                  {field: 'id', title: '批次编号', width:100}
+                , {field: 'fuzeren', title: ' 负责人'}
                 , {field: 'intro', title: '内容'}
                 , {field: '总金额', title: '总金额(￥)'}
                 , {field: 'created_at', title: '创建时间'}
@@ -80,6 +81,7 @@
             , cols: [[ //表头
                 // {type: 'checkbox'}
                 {field: 'id', title: '批次编号', width:100}
+                , {field: 'fuzeren', title: ' 负责人'}
                 , {field: 'intro', title: '内容'}
                 , {field: '总金额', title: '总金额(￥)', width:100}
                 , {field: 'created_at', title: '创建时间'}
