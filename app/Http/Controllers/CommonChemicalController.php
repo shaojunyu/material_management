@@ -125,34 +125,89 @@ class CommonChemicalController extends Controller
             $total += $item->总金额;
             $items[] = $item;
         }
+
+
         $tmp = '../storage/app/docs/华中科技大学单价1000元以下实验室材料验收单.docx';
-        $tmp = str_replace('/', DIRECTORY_SEPARATOR, $tmp);
+        $tmp2 = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
+        $tmp2 = str_replace('/', DIRECTORY_SEPARATOR, $tmp2);
         $templateProcessor = new TemplateProcessor($tmp);
-        $templateProcessor->cloneRow('col1', count($items));
-        $i = 1;
+        $templateProcessor2 = new TemplateProcessor($tmp2);
+
+        $i = 0;//小于1000
+        $j = 0;//大于1000
         foreach ($items as $item) {
-            $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
-            $templateProcessor->setValue('col2#' . $i, $item->规格);
-            $templateProcessor->setValue('col3#' . $i, $item->单价);
-            $templateProcessor->setValue('col4#' . $i, $item->数量);
-            $templateProcessor->setValue('col5#' . $i, $item->总金额);
-            $i = $i + 1;
+            if ($item->单价 < 1000) {
+                $i = $i + 1;
+            } else {
+                $j = $j + 1;
+            }
         }
+        $templateProcessor->cloneRow('col1', $i);
+        $templateProcessor2->cloneRow('col1', $j);
+
+        $i = 1;
+        $j = 1;
+        $total1 = 0;
+        $total2 = 0;
+        foreach ($items as $item) {
+            if ($item->单价 < 1000){
+                $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
+                $templateProcessor->setValue('col2#' . $i, $item->规格);
+                $templateProcessor->setValue('col3#' . $i, $item->单价);
+                $templateProcessor->setValue('col4#' . $i, $item->数量);
+                $templateProcessor->setValue('col5#' . $i, $item->总金额);
+                $i = $i + 1;
+                $total1 = $total1 + $item->总金额;
+            }else{
+                $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
+                $templateProcessor2->setValue('col2#' . $j, $item->规格);
+                $templateProcessor2->setValue('col3#' . $j, $item->单价);
+                $templateProcessor2->setValue('col4#' . $j, $item->数量);
+                $templateProcessor2->setValue('col5#' . $j, $item->总金额);
+                $j = $j + 1;
+                $total2 = $total2 + $item->总金额;
+            }
+        }
+
         $templateProcessor->setValue('采购单位', $item->采购单位);
         $templateProcessor->setValue('供货商', $item->供应商);
-        $templateProcessor->setValue('total', $this->NumToCNMoney($total, true, false) . "(￥ $total)");
+        $templateProcessor->setValue('total', $this->NumToCNMoney($total1, true, false) . "(￥ $total1)");
+        $templateProcessor->setValue('业务号', $batch->id);
+
+        $templateProcessor2->setValue('采购单位', $item->采购单位);
+        $templateProcessor2->setValue('供货商', $item->供应商);
+        $templateProcessor2->setValue('total', $this->NumToCNMoney($total2, true, false) . "(￥ $total2)");
+        $templateProcessor2->setValue('业务号', $batch->id);
+
+        $output = '../storage/app/download/低值设备-批次编号' . $batch->id . '-1.docx';
+        $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
+        $output2 = '../storage/app/download/低值设备-批次编号' . $batch->id . '-2.docx';
+        $output2 = str_replace('/', DIRECTORY_SEPARATOR, $output2);
 
         $batch->setAttribute('总金额', $total);
         $batch->save();
-        foreach ($items as $item){
-            $item->setAttribute('batch_id',$batch->id);
+        foreach ($items as $item) {
+            $item->setAttribute('batch_id', $batch->id);
             $item->save();
         }
-
-        $output = '../storage/app/download/普通试剂-批次编号' .$batch->id. '.docx';
-        $output = str_replace('/', DIRECTORY_SEPARATOR, $output);
         $templateProcessor->saveAs($output);
-        return \response()->download($output);
+        $templateProcessor2->saveAs($output2);
+
+        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zipFile = new \ZipArchive();
+        if (file_exists($zip)){
+            unlink($zip);
+        }
+        $zipFile->open($zip,\ZipArchive::CREATE);
+        if ($i > 1){
+            $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
+        }
+        if ($j > 1){
+            $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
+        }
+        $zipFile->close();
+
+        return \response()->download($zip);
     }
 
     public function NumToCNMoney($num, $mode = true, $sim = true)
@@ -278,8 +333,6 @@ class CommonChemicalController extends Controller
                 $total2 = $total2 + $item->总金额;
             }
         }
-//        return $total1;
-//        return $this->NumToCNMoney(floatval(1414.1));
 
         $templateProcessor->setValue('采购单位', $item->采购单位);
         $templateProcessor->setValue('供货商', $item->供应商);
