@@ -449,7 +449,7 @@ class CommonChemicalController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         $count = Batch::where('type','=','common_chemical')
-            ->where('status','submitted')
+            ->where('status','done')
             ->count();
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
