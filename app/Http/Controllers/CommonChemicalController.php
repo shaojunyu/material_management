@@ -33,6 +33,15 @@ class CommonChemicalController extends Controller
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
 
+    public function emptyList()
+    {
+        $user = Auth::user();
+        $data = CommonChemical::where('user_id', $user->id)
+            ->where('batch_id',null);
+        $data->delete();
+        return JsonResponse::create(['code' => 0]);
+    }
+
     public function addChem(Request $request)
     {
         $user = Auth::user();

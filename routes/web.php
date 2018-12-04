@@ -51,6 +51,7 @@ Route::get('userManage','HomeController@userManage');
 
 //普通试剂
 Route::get('commonChemList','CommonChemicalController@getList');
+Route::get('emptyCommonChemList', 'CommonChemicalController@emptyList');
 Route::get('commonChemHistoryList','CommonChemicalController@getHistoryList');
 Route::post('deleteCommonChem','CommonChemicalController@deleteChem');
 Route::post('addCommonChem','CommonChemicalController@addChem');
@@ -63,6 +64,7 @@ Route::post('resolveCommonChemBatch','CommonChemicalController@resolveCommonChem
 
 //普通设备
 Route::get('commonDeviceList','CommonDeviceController@getList');
+Route::get('emptyCommonDeviceList', 'CommonDeviceController@emptyList');
 Route::post('deleteCommonDevice','CommonDeviceController@deleteDevice');
 Route::post('addCommonDevice','CommonDeviceController@addDevice');
 Route::post('commonDeviceDetail','CommonDeviceController@getDetail');

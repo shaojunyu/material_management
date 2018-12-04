@@ -16,10 +16,11 @@
             <blockquote class="layui-elem-quote">
                 <img src="images/chemical2.png">
                 <h2 style="display: inline">普通试剂入库</h2>
-                <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史记录</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="addCommonChem()">添加</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">提交审核</button>
-                <button class="layui-btn" style="margin-left: 20px" id="uploadButton" onclick="uploadTable()">一键导入
+                <button class="layui-btn" style="margin-left: 15px" onclick="showHistory()">显示历史记录</button>
+                <button class="layui-btn" style="margin-left: 15px" onclick="addCommonChem()">添加</button>
+                <button class="layui-btn" style="margin-left: 15px" onclick="downloadTable()">提交审核</button>
+                <button class="layui-btn" style="margin-left: 15px" id="emptyButton" onclick="emptyTable()">清空列表</button>
+                    <button class="layui-btn" style="margin-left: 15px" id="uploadButton">一键导入
                 </button>
                 <a style="margin-left: 20px" href="docs/普通试剂导入模板.xlsx">下载模板</a>
             </blockquote>
@@ -409,8 +410,16 @@
             }
         });
 
-        function uploadTable() {
-
+        function emptyTable() {
+            layer.confirm('确定清空以下列表中的数据么？<br>(历史记录不收影响)', function (index) {
+                $.get('emptyCommonChemList', function (d) {
+                    // layer.msg(d.message);
+                    if (d.code == 0) {
+                        layer.close(index)
+                        table.reload("commonChemTable")
+                    }
+                });
+            });
         }
 
     </script>

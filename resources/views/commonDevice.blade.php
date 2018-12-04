@@ -18,9 +18,10 @@
                 <h2 style="display: inline">低值设备入库 &nbsp;(适用于单价1000元以下的仪器设备)</h2>
                 <button class="layui-btn" style="margin-left: 20px" onclick="showHistory()">显示历史记录</button>
                 <button class="layui-btn" style="margin-left: 20px" onclick="addCommonDevice()">添加</button>
-                <button class="layui-btn" style="margin-left: 20px" onclick="downloadTable()">提交审核</button>
-                <button class="layui-btn" style="margin-left: 20px" id="uploadButton">一键导入</button>
-                <a style="margin-left: 20px" href="docs/低值设备导入模板.xlsx">下载模板</a>
+                <button class="layui-btn" style="margin-left: 15px" onclick="downloadTable()">提交审核</button>
+                <button class="layui-btn" style="margin-left: 15px" id="emptyButton" onclick="emptyTable()">清空列表</button>
+                <button class="layui-btn" style="margin-left: 15px" id="uploadButton">一键导入</button>
+                <a style="margin-left: 15px" href="docs/低值设备导入模板.xlsx">下载模板</a>
             </blockquote>
             <table id="commonDeviceTable" lay-filter="commonDeviceTable">
 
@@ -327,6 +328,18 @@
                 });
             }
         });
+
+        function emptyTable() {
+            layer.confirm('确定清空以下列表中的数据么？<br>(历史记录不收影响)', function (index) {
+                $.get('emptyCommonDeviceList', function (d) {
+                    // layer.msg(d.message);
+                    if (d.code == 0) {
+                        layer.close(index)
+                        table.reload("commonDeviceTable")
+                    }
+                });
+            });
+        }
 
     </script>
     {{--详情模板--}}

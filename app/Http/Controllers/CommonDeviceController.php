@@ -31,6 +31,15 @@ class CommonDeviceController extends Controller
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
 
+    public function emptyList()
+    {
+        $user = Auth::user();
+        CommonDevice::where('user_id', $user->id)
+            ->where('batch_id', '=', null)
+            ->delete();
+        return JsonResponse::create(['code' => 0]);
+    }
+
     public function addDevice(Request $request)
     {
         $device = new CommonDevice();
