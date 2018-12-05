@@ -391,7 +391,7 @@
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 type: 'commonChem'
             },
-            exts: 'xlsx',
+            exts: 'xlsx|csv',
             done: function () {
                 layer.msg('导入成功', {
                     icon: 1,
@@ -405,7 +405,7 @@
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 }, function () {
-                    window.location.reload();
+                    //window.location.reload();
                 });
             }
         });
