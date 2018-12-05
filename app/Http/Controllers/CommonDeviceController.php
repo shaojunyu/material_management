@@ -21,13 +21,13 @@ class CommonDeviceController extends Controller
         $user = Auth::user();
         $page = $request->input('page');
         $size = $request->input('limit');
-        $data = CommonDevice::offset($size * ($page - 1))
-            ->where('user_id', $user->id)
-            ->where('batch_id', '=', null)
+        $data = CommonDevice::where('user_id', $user->id)
+            ->where('batch_id', '=', null);
+        $count = $data->count();
+        $data = $data->offset($size * ($page - 1))
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = count($data);
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
 
@@ -85,10 +85,10 @@ class CommonDeviceController extends Controller
         if ($batch->user_id != $user->id && !$user->is_admin) {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
-        if ($batch->status === 'done'){
+        if ($batch->status === 'done') {
             return JsonResponse::create(['code' => 1, 'message' => '无法删除']);
         }
-        if($batch->deleteCommonChemicals() && $batch->delete())
+        if ($batch->deleteCommonChemicals() && $batch->delete())
             return JsonResponse::create(['code' => 0, 'message' => '删除成功']);
         return JsonResponse::create(['code' => 1, 'message' => '删除失败']);
     }
@@ -122,9 +122,9 @@ class CommonDeviceController extends Controller
             list($num, $dec) = explode('.', $num);
             $dec = strval(round($dec, 2));
             if ($mode) {
-                if (strlen($dec) === 1){
+                if (strlen($dec) === 1) {
                     $retval .= "{$char[$dec['0']]}角";
-                }else{
+                } else {
                     $retval .= "{$char[$dec['0']]}角{$char[$dec['1']]}分";
                 }
             } else {
@@ -199,7 +199,7 @@ class CommonDeviceController extends Controller
         $total1 = 0;
         $total2 = 0;
         foreach ($items as $item) {
-            if ($item->单价 < 1000){
+            if ($item->单价 < 1000) {
                 $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
                 $templateProcessor->setValue('col2#' . $i, $item->规格);
                 $templateProcessor->setValue('col3#' . $i, $item->单价);
@@ -207,7 +207,7 @@ class CommonDeviceController extends Controller
                 $templateProcessor->setValue('col5#' . $i, $item->总金额);
                 $i = $i + 1;
                 $total1 = $total1 + $item->总金额;
-            }else{
+            } else {
                 $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
                 $templateProcessor2->setValue('col2#' . $j, $item->规格);
                 $templateProcessor2->setValue('col3#' . $j, $item->单价);
@@ -241,16 +241,16 @@ class CommonDeviceController extends Controller
         }
         $templateProcessor->saveAs($output);
         $templateProcessor2->saveAs($output2);
-        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zip = '../storage/app/download/低值设备-批次编号' . $batch->id . ".zip";
         $zipFile = new \ZipArchive();
-        if (file_exists($zip)){
+        if (file_exists($zip)) {
             unlink($zip);
         }
-        $zipFile->open($zip,\ZipArchive::CREATE);
-        if ($i > 1){
+        $zipFile->open($zip, \ZipArchive::CREATE);
+        if ($i > 1) {
             $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
-        if ($j > 1){
+        if ($j > 1) {
             $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
@@ -310,7 +310,7 @@ class CommonDeviceController extends Controller
         $total1 = 0;
         $total2 = 0;
         foreach ($items as $item) {
-            if ($item->单价 < 1000){
+            if ($item->单价 < 1000) {
                 $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
                 $templateProcessor->setValue('col2#' . $i, $item->规格);
                 $templateProcessor->setValue('col3#' . $i, $item->单价);
@@ -318,7 +318,7 @@ class CommonDeviceController extends Controller
                 $templateProcessor->setValue('col5#' . $i, $item->总金额);
                 $i = $i + 1;
                 $total1 = $total1 + $item->总金额;
-            }else{
+            } else {
                 $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
                 $templateProcessor2->setValue('col2#' . $j, $item->规格);
                 $templateProcessor2->setValue('col3#' . $j, $item->单价);
@@ -351,16 +351,16 @@ class CommonDeviceController extends Controller
         }
         $templateProcessor->saveAs($output);
         $templateProcessor2->saveAs($output2);
-        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zip = '../storage/app/download/低值设备-批次编号' . $batch->id . ".zip";
         $zipFile = new \ZipArchive();
-        if (file_exists($zip)){
+        if (file_exists($zip)) {
             unlink($zip);
         }
-        $zipFile->open($zip,\ZipArchive::CREATE);
-        if ($i > 1){
+        $zipFile->open($zip, \ZipArchive::CREATE);
+        if ($i > 1) {
             $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
-        if ($j > 1){
+        if ($j > 1) {
             $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();

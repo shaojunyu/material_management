@@ -131,41 +131,51 @@ class HomeController extends Controller
         $file = $request->file('file');
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $sheet = $reader->load($file);
+        $sheet->setActiveSheetIndex(0);
+
         $user = Auth::user();
         if ($request->input('type') === 'commonChem') {
-            $data = $sheet->getActiveSheet()->toArray();
-            $data = array_reverse($data);
-            array_pop($data);
-            foreach ($data as $row) {
+            $worksheet = $sheet->getActiveSheet();
+            // Get the highest row and column numbers referenced in the worksheet
+            $highestRowIndex = $worksheet->getHighestRow(); // e.g. 10
+//            return $highestRowIndex;
+            $highestColumnIndex = 7;
+            //跳过第一行
+            for ($row = 2; $row <= $highestRowIndex; ++$row) {
+                if(empty($worksheet->getCellByColumnAndRow(1, $row)->getValue()))
+                    break;
+                $attr = ['试剂名称' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                    '规格' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                    '数量' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                    '单价' => $worksheet->getCellByColumnAndRow(4, $row)->getValue(),
+                    '总金额' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                    '申购人姓名' => $worksheet->getCellByColumnAndRow(6, $row)->getValue(),
+                    '申购人号码' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
+                    'user_id' => $user->id];
                 $chem = new CommonChemical();
-                $chem->setRawAttributes([
-                    '试剂名称' => $row[0],
-                    '规格' => $row[1],
-                    '数量' => $row[2],
-                    '单价' => $row[3],
-                    '总金额' => $row[2] * $row[3],
-                    '申购人姓名' => $row[5],
-                    '申购人号码' => $row[6],
-                    'user_id'=>$user->id
-                ]);
+                $chem->setRawAttributes($attr);
                 $chem->save();
             }
-        }elseif ($request->input('type') === 'commonDevice'){
-            $data = $sheet->getActiveSheet()->toArray();
-            $data = array_reverse($data);
-            array_pop($data);
-            foreach ($data as $row) {
+        } elseif ($request->input('type') === 'commonDevice') {
+            $worksheet = $sheet->getActiveSheet();
+            $highestRowIndex = $worksheet->getHighestRow();
+            $highestColumnIndex = 7;
+            //跳过第一行
+            for ($row = 2; $row <= $highestRowIndex; ++$row) {
+                if(empty($worksheet->getCellByColumnAndRow(1, $row)->getValue()))
+                    break;
+
+                $attr = [
+                    '品名' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                    '规格' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                    '数量' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                    '单价' => $worksheet->getCellByColumnAndRow(4, $row)->getValue(),
+                    '总金额' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                    '采购负责人' => $worksheet->getCellByColumnAndRow(6, $row)->getValue(),
+                    '负责人号码' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
+                    'user_id' => $user->id];
                 $device = new CommonDevice();
-                $device->setRawAttributes([
-                    '品名' => $row[0],
-                    '规格' => $row[1],
-                    '数量' => $row[2],
-                    '单价' => $row[3],
-                    '总金额' => $row[2] * $row[3],
-                    '采购负责人' => $row[5],
-                    '负责人号码' => $row[6],
-                    'user_id'=>$user->id
-                ]);
+                $device->setRawAttributes($attr);
                 $device->save();
             }
         }
@@ -179,31 +189,4 @@ class HomeController extends Controller
         return json_encode($user->getSafeCabinets());
     }
 
-}
-
-Class MyReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
-{
-
-    private $startRow = 0;
-    private $endRow = 0;
-    private $columns = [];
-
-    /**  Get the list of rows and columns to read  */
-    public function __construct($startRow, $endRow, $columns)
-    {
-        $this->startRow = $startRow;
-        $this->endRow = $endRow;
-        $this->columns = $columns;
-    }
-
-    public function readCell($column, $row, $worksheetName = '')
-    {
-        //  Only read the rows and columns that were configured
-        if ($row >= $this->startRow && $row <= $this->endRow) {
-            if (in_array($column, $this->columns)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

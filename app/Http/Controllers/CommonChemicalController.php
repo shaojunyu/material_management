@@ -23,13 +23,13 @@ class CommonChemicalController extends Controller
         $user = Auth::user();
         $page = $request->input('page');
         $size = $request->input('limit');
-        $data = CommonChemical::offset($size * ($page - 1))
-            ->where('user_id', $user->id)
-            ->where('batch_id',null)
+        $data = CommonChemical::where('user_id', $user->id)
+            ->where('batch_id', '=', null);
+        $count = $data->count();
+        $data = $data->offset($size * ($page - 1))
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = count($data);
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
 
@@ -37,7 +37,7 @@ class CommonChemicalController extends Controller
     {
         $user = Auth::user();
         $data = CommonChemical::where('user_id', $user->id)
-            ->where('batch_id',null);
+            ->where('batch_id', null);
         $data->delete();
         return JsonResponse::create(['code' => 0]);
     }
@@ -127,7 +127,7 @@ class CommonChemicalController extends Controller
             if ($item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
                 continue;
             }
-            if($item->batch_id > 0){
+            if ($item->batch_id > 0) {
                 continue;
             }
             $item->总金额 = $item->单价 * $item->数量;
@@ -159,7 +159,7 @@ class CommonChemicalController extends Controller
         $total1 = 0;
         $total2 = 0;
         foreach ($items as $item) {
-            if ($item->单价 < 1000){
+            if ($item->单价 < 1000) {
                 $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
                 $templateProcessor->setValue('col2#' . $i, $item->规格);
                 $templateProcessor->setValue('col3#' . $i, $item->单价);
@@ -167,7 +167,7 @@ class CommonChemicalController extends Controller
                 $templateProcessor->setValue('col5#' . $i, $item->总金额);
                 $i = $i + 1;
                 $total1 = $total1 + $item->总金额;
-            }else{
+            } else {
                 $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
                 $templateProcessor2->setValue('col2#' . $j, $item->规格);
                 $templateProcessor2->setValue('col3#' . $j, $item->单价);
@@ -202,16 +202,16 @@ class CommonChemicalController extends Controller
         $templateProcessor->saveAs($output);
         $templateProcessor2->saveAs($output2);
 
-        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zip = '../storage/app/download/低值设备-批次编号' . $batch->id . ".zip";
         $zipFile = new \ZipArchive();
-        if (file_exists($zip)){
+        if (file_exists($zip)) {
             unlink($zip);
         }
-        $zipFile->open($zip,\ZipArchive::CREATE);
-        if ($i > 1){
+        $zipFile->open($zip, \ZipArchive::CREATE);
+        if ($i > 1) {
             $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
-        if ($j > 1){
+        if ($j > 1) {
             $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
@@ -233,9 +233,9 @@ class CommonChemicalController extends Controller
             $dec = strval(round($dec, 2));
             if ($mode) {
 
-                if (strlen($dec) === 1){
+                if (strlen($dec) === 1) {
                     $retval .= "{$char[$dec['0']]}角";
-                }else{
+                } else {
                     $retval .= "{$char[$dec['0']]}角{$char[$dec['1']]}分";
                 }
             } else {
@@ -269,7 +269,7 @@ class CommonChemicalController extends Controller
         $size = $request->input('limit');
         $data = Batch::offset($size * ($page - 1))
             ->where('user_id', $user->id)
-            ->where('type','=','common_chemical')
+            ->where('type', '=', 'common_chemical')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
@@ -284,10 +284,10 @@ class CommonChemicalController extends Controller
         if ($batch->user_id != $user->id && !$user->is_admin) {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
-        if ($batch->status === 'done'){
+        if ($batch->status === 'done') {
             return JsonResponse::create(['code' => 1, 'message' => '无法删除']);
         }
-        if($batch->deleteCommonChemicals() && $batch->delete())
+        if ($batch->deleteCommonChemicals() && $batch->delete())
             return JsonResponse::create(['code' => 0, 'message' => '删除成功']);
         return JsonResponse::create(['code' => 1, 'message' => '删除失败']);
     }
@@ -324,7 +324,7 @@ class CommonChemicalController extends Controller
         $total1 = 0;
         $total2 = 0;
         foreach ($items as $item) {
-            if ($item->单价 < 1000){
+            if ($item->单价 < 1000) {
                 $templateProcessor->setValue('col1#' . $i, $item->试剂名称);
                 $templateProcessor->setValue('col2#' . $i, $item->规格);
                 $templateProcessor->setValue('col3#' . $i, $item->单价);
@@ -332,7 +332,7 @@ class CommonChemicalController extends Controller
                 $templateProcessor->setValue('col5#' . $i, $item->总金额);
                 $i = $i + 1;
                 $total1 = $total1 + $item->总金额;
-            }else{
+            } else {
                 $templateProcessor2->setValue('col1#' . $j, $item->试剂名称);
                 $templateProcessor2->setValue('col2#' . $j, $item->规格);
                 $templateProcessor2->setValue('col3#' . $j, $item->单价);
@@ -367,16 +367,16 @@ class CommonChemicalController extends Controller
         $templateProcessor->saveAs($output);
         $templateProcessor2->saveAs($output2);
 
-        $zip = '../storage/app/download/低值设备-批次编号'.$batch->id.".zip";
+        $zip = '../storage/app/download/低值设备-批次编号' . $batch->id . ".zip";
         $zipFile = new \ZipArchive();
-        if (file_exists($zip)){
+        if (file_exists($zip)) {
             unlink($zip);
         }
-        $zipFile->open($zip,\ZipArchive::CREATE);
-        if ($i > 1){
+        $zipFile->open($zip, \ZipArchive::CREATE);
+        if ($i > 1) {
             $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
-        if ($j > 1){
+        if ($j > 1) {
             $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
@@ -392,18 +392,18 @@ class CommonChemicalController extends Controller
         if ($batch->user_id != $user->id && !$user->is_admin) {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
-        if ($batch->status === "done"){
+        if ($batch->status === "done") {
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
         $chems = $batch->chemicals;
-        foreach ($chems as $chem){
+        foreach ($chems as $chem) {
             $chem->batch_id = null;
             $chem->save();
         }
 
-        if ($batch->delete()){
+        if ($batch->delete()) {
             return JsonResponse::create(['code' => 0, 'message' => '操作成功']);
-        }else{
+        } else {
             return JsonResponse::create(['code' => 1, 'message' => '操作失败，请稍后重试']);
         }
     }
@@ -417,13 +417,13 @@ class CommonChemicalController extends Controller
         $page = $request->input('page');
         $size = $request->input('limit');
         $data = Batch::offset($size * ($page - 1))
-            ->where('type','=','common_chemical')
-            ->where('status','submitted')
+            ->where('type', '=', 'common_chemical')
+            ->where('status', 'submitted')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = Batch::where('type','=','common_chemical')
-            ->where('status','submitted')
+        $count = Batch::where('type', '=', 'common_chemical')
+            ->where('status', 'submitted')
             ->count();
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }
@@ -436,9 +436,9 @@ class CommonChemicalController extends Controller
             return JsonResponse::create(['code' => 1, 'message' => '无权限操作']);
         }
         $batch->status = "done";
-        if ($batch->update()){
+        if ($batch->update()) {
             return JsonResponse::create(['code' => 0, 'message' => '操作成功']);
-        }else{
+        } else {
             return JsonResponse::create(['code' => 1, 'message' => '操作失败，请稍后重试']);
         }
     }
@@ -452,13 +452,13 @@ class CommonChemicalController extends Controller
         $page = $request->input('page');
         $size = $request->input('limit');
         $data = Batch::offset($size * ($page - 1))
-            ->where('type','=','common_chemical')
-            ->where('status','done')
+            ->where('type', '=', 'common_chemical')
+            ->where('status', 'done')
             ->take($size)
             ->orderBy('id', 'desc')
             ->get();
-        $count = Batch::where('type','=','common_chemical')
-            ->where('status','done')
+        $count = Batch::where('type', '=', 'common_chemical')
+            ->where('status', 'done')
             ->count();
         return JsonResponse::create(['code' => 0, 'count' => $count, 'data' => $data]);
     }

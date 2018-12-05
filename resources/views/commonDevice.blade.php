@@ -316,7 +316,8 @@
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 }, function () {
-                    window.location.reload();
+                    // window.location.reload();
+                    table.reload("commonDeviceTable")
                 });
             },
             error: function () {
@@ -324,7 +325,8 @@
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 }, function () {
-                    window.location.reload();
+                    // window.location.reload();
+                    table.reload("commonDeviceTable")
                 });
             }
         });

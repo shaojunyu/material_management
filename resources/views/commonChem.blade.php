@@ -19,13 +19,19 @@
                 <button class="layui-btn" style="margin-left: 15px" onclick="showHistory()">显示历史记录</button>
                 <button class="layui-btn" style="margin-left: 15px" onclick="addCommonChem()">添加</button>
                 <button class="layui-btn" style="margin-left: 15px" onclick="downloadTable()">提交审核</button>
-                <button class="layui-btn" style="margin-left: 15px" id="emptyButton" onclick="emptyTable()">清空列表</button>
-                    <button class="layui-btn" style="margin-left: 15px" id="uploadButton">一键导入
+                <button class="layui-btn" style="margin-left: 15px" id="emptyButton" onclick="emptyTable()">清空列表
+                </button>
+                <button class="layui-btn" style="margin-left: 15px" id="uploadButton">一键导入
                 </button>
                 <a style="margin-left: 20px" href="docs/普通试剂导入模板.xlsx">下载模板</a>
             </blockquote>
+
+
             <table id="commonChemTable" lay-filter="commonChemTable">
             </table>
+            <div id="page"></div>
+
+
             <div>
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                     <legend>历史记录</legend>
@@ -156,6 +162,7 @@
     </script>
     <script>
         var form = layui.form;
+        var laypage = layui.laypage;
         var table = layui.table;
         var laytpl = layui.laytpl;
         var laydate = layui.laydate;
@@ -164,11 +171,12 @@
             elem: '#test1' //指定元素
         });
 
+
         table.render({
             elem: '#commonChemTable'
             , url: 'commonChemList'
             , limit: 20
-            , page: true //开启分页
+            , page: true
             , cols: [[ //表头
                 {type: 'checkbox'}
                 , {field: '试剂名称', title: '试剂名称'}
@@ -346,12 +354,12 @@
                 , page: true //开启分页
                 , cols: [[ //表头
                     // {type: 'checkbox'}
-                     {field: 'id', title: '批次编号', width: 100}
+                    {field: 'id', title: '批次编号', width: 100}
                     , {field: 'intro', title: '内容'}
-                    , {field: '总金额', title: '总金额(￥)', width:100}
+                    , {field: '总金额', title: '总金额(￥)', width: 100}
                     , {field: 'created_at', title: '创建时间'}
                     , {
-                        field: 'status', title: '状态', width:150, templet: function (d) {
+                        field: 'status', title: '状态', width: 150, templet: function (d) {
                             if (d.status === 'submitted')
                                 return "已提交，等待审核";
                             if (d.status === "done")
@@ -397,7 +405,8 @@
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 }, function () {
-                    window.location.reload();
+                    table.reload("commonChemTable")
+                    // window.location.reload();
                 });
             },
             error: function () {
@@ -405,6 +414,7 @@
                     icon: 1,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 }, function () {
+                    table.reload("commonChemTable")
                     //window.location.reload();
                 });
             }
@@ -486,7 +496,7 @@
                     type: 1,
                     content: $("#batchCommonChemDetail"),
                     title: '批次详情',
-                    area: ['1300px','700px']
+                    area: ['1300px', '700px']
                 });
             } else if (obj.event === 'del') {
                 layer.confirm('确定删除该批次数据么？批次号：' + obj.data.id, function (index) {
@@ -531,7 +541,7 @@
                     table.reload("commonChemTable");
                     layer.close(index);
                 });
-            }else if (obj.event === "resolve"){//分解批次
+            } else if (obj.event === "resolve") {//分解批次
                 var ids = [];
                 var total = 0;
                 var confirm = "<h3>您将解除该批次，请确认!<br>";
