@@ -53,9 +53,9 @@ class CommonChemical extends Model
 {
     protected $table = 'common_chem';
 
-    public function setUserIdAttribute($value)
+    public function getUserIdAttribute($value)
     {
-        $this->attributes['user_id'] = (int)($value);
+        return (int)$value;
     }
 
 }
