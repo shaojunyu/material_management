@@ -209,13 +209,14 @@ class CommonChemicalController extends Controller
         }
         $zipFile->open($zip, \ZipArchive::CREATE);
         if ($i > 1) {
-            $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
+
+            $zipFile->addFile(iconv("UTF-8", "GBK", $output), '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
         if ($j > 1) {
-            $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
+            $zipFile->addFile(iconv("UTF-8", "GBK", $output2), '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
-
+        return iconv("UTF-8", "GBK", $output);
         return \response()->download($zip);
     }
 
