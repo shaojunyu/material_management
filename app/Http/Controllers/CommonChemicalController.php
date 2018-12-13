@@ -124,7 +124,7 @@ class CommonChemicalController extends Controller
         $total = 0;
         foreach ($ids as $id) {
             $item = CommonChemical::find($id);
-            if ($item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
+            if ((int)$item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
                 continue;
             }
             if (!empty($item->batch_id)){
@@ -138,7 +138,7 @@ class CommonChemicalController extends Controller
             $items[] = $item;
             return $item;
         }
-        return $ids;
+        return (string)is_array($ids);
 
 
         $tmp = '../storage/app/docs/华中科技大学单价1000元以下实验室材料验收单.docx';
