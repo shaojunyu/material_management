@@ -127,6 +127,9 @@ class CommonChemicalController extends Controller
             if ($item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
                 continue;
             }
+            if (!empty($item->batch_id)){
+                return '请勿重复下载';
+            }
             if ($item->batch_id > 0) {
                 continue;
             }
@@ -134,6 +137,7 @@ class CommonChemicalController extends Controller
             $total += $item->总金额;
             $items[] = $item;
         }
+        return $items[0];
 
 
         $tmp = '../storage/app/docs/华中科技大学单价1000元以下实验室材料验收单.docx';
@@ -207,17 +211,19 @@ class CommonChemicalController extends Controller
         if (file_exists($zip)) {
             unlink($zip);
         }
-        $zipFile->open($zip, \ZipArchive::CREATE);
+        $a = $zipFile->open($zip, \ZipArchive::CREATE);
+        var_dump($i);
         if ($i > 1) {
-
-            $zipFile->addFile(iconv("UTF-8", "GBK", $output), '业务编号' . $batch->id . '-1-单价1000以下.docx');
+            $b = $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
+            var_dump($b);
         }
         if ($j > 1) {
-            $zipFile->addFile(iconv("UTF-8", "GBK", $output2), '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
+            $c = $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
+            var_dump($c);
         }
         $zipFile->close();
-        return (string)(file_exists($output));
-        return \response()->download($zip);
+//        return (string)($a);
+//        return \response()->download($zip);
     }
 
     public function NumToCNMoney($num, $mode = true, $sim = true)
