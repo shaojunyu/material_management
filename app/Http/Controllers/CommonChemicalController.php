@@ -124,11 +124,12 @@ class CommonChemicalController extends Controller
         $total = 0;
         foreach ($ids as $id) {
             $item = CommonChemical::find($id);
-
+            var_dump($item->user_id);
+            var_dump(Auth::user()->id);
             if ($item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
                 continue;
             }
-            if (!empty($item->batch_id)){
+            if (!empty($item->batch_id)) {
                 return '请勿重复下载';
             }
             if ($item->batch_id > 0) {
