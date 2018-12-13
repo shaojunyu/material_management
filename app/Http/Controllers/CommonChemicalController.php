@@ -136,6 +136,7 @@ class CommonChemicalController extends Controller
             $item->总金额 = $item->单价 * $item->数量;
             $total += $item->总金额;
             $items[] = $item;
+            return $item;
         }
         return $ids;
 
