@@ -216,7 +216,7 @@ class CommonChemicalController extends Controller
             $zipFile->addFile(iconv("UTF-8", "GBK", $output2), '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
-        return stringValue(file_exists($output));
+        return (string)(file_exists($output));
         return \response()->download($zip);
     }
 
