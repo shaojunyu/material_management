@@ -289,7 +289,7 @@
             checkStatus.data.forEach(function (item) {
                 ids.push(item.id);
                 confirm += "<li><span class=\"layui-badge-dot layui-bg-black\"></span>&nbsp;" + item.试剂名称 + "</li>";
-                total += item.总金额;
+                total += parseFloat(item.总金额);
             });
             confirm += "</ul>";
             if (total >= 100000) {

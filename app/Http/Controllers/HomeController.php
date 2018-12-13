@@ -146,9 +146,9 @@ class HomeController extends Controller
                     break;
                 $attr = ['试剂名称' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
                     '规格' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
-                    '数量' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
-                    '单价' => $worksheet->getCellByColumnAndRow(4, $row)->getValue(),
-                    '总金额' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                    '数量' => floatval($worksheet->getCellByColumnAndRow(3, $row)->getValue()),
+                    '单价' => floatval($worksheet->getCellByColumnAndRow(4, $row)->getValue()),
+                    '总金额' => floatval($worksheet->getCellByColumnAndRow(5, $row)->getValue()),
                     '申购人姓名' => $worksheet->getCellByColumnAndRow(6, $row)->getValue(),
                     '申购人号码' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
                     'user_id' => $user->id];
@@ -168,9 +168,9 @@ class HomeController extends Controller
                 $attr = [
                     '品名' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
                     '规格' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
-                    '数量' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
-                    '单价' => $worksheet->getCellByColumnAndRow(4, $row)->getValue(),
-                    '总金额' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                    '数量' => floatval($worksheet->getCellByColumnAndRow(3, $row)->getValue()),
+                    '单价' => floatval($worksheet->getCellByColumnAndRow(4, $row)->getValue()),
+                    '总金额' => floatval($worksheet->getCellByColumnAndRow(5, $row)->getValue()),
                     '采购负责人' => $worksheet->getCellByColumnAndRow(6, $row)->getValue(),
                     '负责人号码' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
                     'user_id' => $user->id];
