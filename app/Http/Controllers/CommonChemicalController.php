@@ -137,7 +137,7 @@ class CommonChemicalController extends Controller
             $total += $item->总金额;
             $items[] = $item;
         }
-        return $items[0];
+        return $ids;
 
 
         $tmp = '../storage/app/docs/华中科技大学单价1000元以下实验室材料验收单.docx';
