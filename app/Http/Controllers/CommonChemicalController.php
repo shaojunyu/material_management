@@ -124,6 +124,7 @@ class CommonChemicalController extends Controller
         $total = 0;
         foreach ($ids as $id) {
             $item = CommonChemical::find($id);
+
             if ($item->user_id !== Auth::user()->id && !Auth::user()->is_admin) {
                 continue;
             }
@@ -137,7 +138,7 @@ class CommonChemicalController extends Controller
             $total += $item->总金额;
             $items[] = $item;
         }
-
+        return $items;
 
         $tmp = '../storage/app/docs/华中科技大学单价1000元以下实验室材料验收单.docx';
         $tmp2 = '../storage/app/docs/华中科技大学单价1000元（含）以上实验室材料验收单.docx';
@@ -210,19 +211,16 @@ class CommonChemicalController extends Controller
         if (file_exists($zip)) {
             unlink($zip);
         }
-        $a = $zipFile->open($zip, \ZipArchive::CREATE);
-        var_dump($i);
+        $zipFile->open($zip, \ZipArchive::CREATE);
+
         if ($i > 1) {
-            $b = $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
-            var_dump($b);
+            $zipFile->addFile($output, '业务编号' . $batch->id . '-1-单价1000以下.docx');
         }
         if ($j > 1) {
-            $c = $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
-            var_dump($c);
+            $zipFile->addFile($output2, '业务编号' . $batch->id . '-1-单价1000以上（含）.docx');
         }
         $zipFile->close();
-//        return (string)($a);
-//        return \response()->download($zip);
+        return \response()->download($zip);
     }
 
     public function NumToCNMoney($num, $mode = true, $sim = true)

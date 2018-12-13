@@ -52,4 +52,10 @@ use Illuminate\Database\Eloquent\Model;
 class CommonChemical extends Model
 {
     protected $table = 'common_chem';
+
+    public function setUserIdAttribute($value)
+    {
+        $this->attributes['user_id'] = (int)($value);
+    }
+
 }
