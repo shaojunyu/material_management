@@ -115,4 +115,9 @@ class Batch extends Model
         return false;
     }
 
+    public function getUserIdAttribute($value)
+    {
+        return (int)$value;
+    }
+
 }

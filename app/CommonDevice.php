@@ -41,4 +41,9 @@ class CommonDevice extends Model
 {
     //低值设备
     protected $table = 'common_device';
+
+    public function getUserIdAttribute($value)
+    {
+        return (int)$value;
+    }
 }
