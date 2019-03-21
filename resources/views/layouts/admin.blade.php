@@ -69,14 +69,14 @@
                         <dd><a href="commonDevice">低值设备入库 <img src="images/device.png" class="img-icon"> </a></dd>
                     </dl>
                 </li>
-                {{--@if(Auth::user()->p_id === null)--}}
-                    {{--<li class="layui-nav-item layui-nav-itemed">--}}
-                        {{--<a href="javascript:;">子账户管理</a>--}}
-                        {{--<dl class="layui-nav-child">--}}
-                            {{--<dd><a href="./subUserManage">子账户管理 <img src="images/user.png" class="img-icon"></a></dd>--}}
-                        {{--</dl>--}}
-                    {{--</li>--}}
-                {{--@endif--}}
+                @if(Auth::user()->p_id === null)
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">子账户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./subUserManage">子账户管理 <img src="images/user.png" class="img-icon"></a></dd>
+                        </dl>
+                    </li>
+                @endif
                 @if(Auth::user()->is_admin === 1)
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">系统管理</a>
