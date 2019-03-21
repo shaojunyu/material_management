@@ -64,4 +64,10 @@ class HazardousChemicalOrder extends Model
             return $u->name;
         }
     }
+
+
+    public function getUserIdAttribute($value)
+    {
+        return (int)$value;
+    }
 }
