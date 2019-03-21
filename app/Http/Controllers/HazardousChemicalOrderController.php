@@ -90,8 +90,8 @@ class HazardousChemicalOrderController extends Controller
         $user = Auth::user();
         $order = HazardousChemicalOrder::find($request->input('orderId'));
         if ($order->user_id !== $user->id) {
-            return [$order->user_id, $user->id];
-//            return redirect('HazardousChemicalOrder');
+//            return [$order->user_id, $user->id];
+            return redirect('HazardousChemicalOrder');
         }
         if ($order->status === 'done' or $order->status === 'submitted')
             return redirect('HazardousChemicalOrder');
