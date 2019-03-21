@@ -48,7 +48,7 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-    protected $appends = ['p_user','is_admin'];
+    protected $appends = ['p_user'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -71,8 +71,8 @@ class User extends Authenticatable
         return $this->hasOne('App\User','id','p_id')->get();
     }
 
-    public function getIsAdminAttribute()
+    public function getIsAdminAttribute($value)
     {
-        return (int)$this->is_admin;
+        return (int)$value;
     }
 }
