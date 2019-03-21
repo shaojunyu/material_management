@@ -258,7 +258,7 @@
     }, 60000)
 
     function showMe() {
-//        layer.msg("Bug report: yushaojun@hust.edu.cn",{time:1*1000});
+       layer.msg("Bug report: hustysj@gmail.com",{time:1*1000});
     }
 </script>
 @section('script')

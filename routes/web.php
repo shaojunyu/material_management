@@ -114,6 +114,7 @@ Route::get('downloadOrderForm','HazardousChemicalOrderController@downloadOrder')
 //Route::post('DeleteHazardChemCartItem','HazardousChemicalOrderController@DeleteCartItem');
 
 
+
 //上传接口
 Route::post('uploadTable','HomeController@uploadTable');
 
